@@ -360,6 +360,7 @@ if ($_SESSION['is_login'] == 'true') {
   <div class="preload" style="display: none;">
     <center><img src="images/25.gif" /></center>
   </div>
+
   <ul class="nav nav-pills">
     <li class="active" id="li1"><a href="#personal" data-toggle="tab"><b>Personal Details</b></a></li>
     <li id="li2"><a href="#" data-toggle="tab"><b>Educational Details</b></a></li>
@@ -831,7 +832,7 @@ if ($_SESSION['is_login'] == 'true') {
             </div>
             <div class="clearfix"></div><br />
             <div id="typing_div1" style="display:<?php
-                                                  if (isset($post) && ($post == "CCTAdmin-1-2025" || $post == "PSAdmin-2-2023")) {
+                                                  if (isset($post) && ($post == "CCTAdmin-2-2025" || $post == "PSAdmin-2-2023")) {
                                                     echo 'block';
                                                     $required1 = "required";
                                                   } else {
@@ -1273,9 +1274,9 @@ if ($_SESSION['is_login'] == 'true') {
                                                           }
                                                           ?>>
                   <option value="">Select Degree </option>
-                  <!--                                            <option value="Bachelors in Civil" <?php //echo ($edu3 == 'Bachelors in Civil') ? "selected" : "";                                                                                                                                                                                                                                                                                      
+                  <!--                                            <option value="Bachelors in Civil" <?php //echo ($edu3 == 'Bachelors in Civil') ? "selected" : "";
                                                                                                       ?>>Bachelors in Civil</option>
-                                            <option value="Diploma in Civil" <?php //echo ($edu3 == 'Diploma in Civil') ? "selected" : "";                                                                                                                                                                                                                                                                                   
+                                            <option value="Diploma in Civil" <?php //echo ($edu3 == 'Diploma in Civil') ? "selected" : "";
                                                                               ?>>Diploma in Civil</option>-->
                   <option value="Diploma in Computer Application" <?php echo ($edu3 == 'Diploma in Computer Application') ? "selected" : ""; ?>>Diploma in Computer Application</option>
                   <option value="Bachelors in CS/IT" <?php echo ($edu3 == 'Bachelors in CS/IT') ? "selected" : ""; ?>>Bachelors in CS/IT</option>
@@ -1352,7 +1353,7 @@ if ($_SESSION['is_login'] == 'true') {
                                                                     }
                                                                     ?>>
                   <option value="">Select Degree</option>
-                  <!--<option value="Masters in Civil" <?php //echo ($edu4 == 'Masters in Civil') ? "selected" : "";                                                                                                                                                                                                                                                                                  
+                  <!--<option value="Masters in Civil" <?php //echo ($edu4 == 'Masters in Civil') ? "selected" : "";
                                                         ?>>Masters in Civil</option>-->
                   <option value="MBA" <?php echo ($edu4 == 'MBA') ? "selected" : ""; ?>>MBA</option>
                   <option value="Masters in CS/IT" <?php echo ($edu4 == 'Masters in CS/IT') ? "selected" : ""; ?>>Masters in CS/IT</option>
@@ -1922,7 +1923,7 @@ if ($_SESSION['is_login'] == 'true') {
                       <option value="Yes" <?php echo ($police == "Yes") ? 'selected' : ''; ?>>Yes</option>
                       <option value="No" <?php echo ($police == "No") ? 'selected' : ''; ?>>No</option>
                     </select>
-                    <?php //}                   
+                    <?php //}
                     ?>
 
               </td>
@@ -2106,7 +2107,7 @@ if ($_SESSION['is_login'] == 'true') {
                 <a href="<?php echo $sign; ?>" style="<?php echo $style2; ?>" id="file_anchor2" target="_blank"><b><u>View </u> </b></a>
                 <input type="hidden" id="file_hidden2" name="file_hidden2" value="<?php echo isset($val2) ? "$val2" : "" ?>" />
                 <!-- <a href="" style="display:inline-block"><b>Delete</b></a>-->
-                <?php // }                                            
+                <?php // }
                 ?>
               </td>
 
@@ -2459,8 +2460,8 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
       //            } else {
       //                return true;
       //            }
-      // } else if (document.frmregister.post.value == "CCTAdmin-1-2025") {
-    } else if (document.frmregister.post.value == "CCTAdmin-1-2025" && isUserLoggedIn) {
+      // } else if (document.frmregister.post.value == "TestCCTAdmin-2-2025") {
+    } else if (document.frmregister.post.value == "TestCCTAdmin-2-2025" && isUserLoggedIn) {
       if (document.frmregister.typing_speed.value == "") {
         alert("Please Enter Typing Speed.");
         document.frmregister.typing_speed.focus();
@@ -3546,7 +3547,7 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
     //        }
 
     // New logic: Show or hide the typing_div1
-    if (post == 'CCTAdmin-1-2025') {
+    if (post == 'TestCCTAdmin-2-2025') {
       // Show the typing div
       $("#typing_div1").css("display", "block");
       // Add required attributes dynamically if needed

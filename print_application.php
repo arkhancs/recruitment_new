@@ -403,7 +403,7 @@ error_reporting(0);
 								<td width="20%">Typing Certificate Date:</td>
 								<td width="30%"><?php echo ($row['typing_certi_date'] != '') ? $row['typing_certi_date'] : "-"; ?></td>
 							</tr>
-						<?php } else if ($row['post'] == "CCTAdmin-1-2025") { ?>
+						<?php } else if ($row['post'] == "TestCCTAdmin-2-2025") { ?>
 							<tr>
 								<td width="20%">Typing Speed:</td>
 								<td width="30%"><?php echo ($row['typing_speed'] != '') ? $row['typing_speed'] . '(' . $row['typing_language'] . ')' : "-"; ?></td>

@@ -260,7 +260,7 @@ if ($_SESSION['is_login'] != 'true') {
                             <b>Transaction Amount : </b><?php echo $row['dd_amount']; ?> Rs/-
                         </div>
                         <!--                            <div class="col-md-4">
-                                                                <b>Bank Name : </b><?php //echo $row['bank_name'] . ', ' . $row['branch_name'];                   
+                                                                <b>Bank Name : </b><?php //echo $row['bank_name'] . ', ' . $row['branch_name'];
                                                                                     ?>
                                                             </div>-->
                     <?php } ?>
@@ -435,7 +435,7 @@ if ($_SESSION['is_login'] != 'true') {
                                 <td width="20%">Typing Certificate Date:</td>
                                 <td width="30%"><?php echo ($row['typing_certi_date'] != '') ? $row['typing_certi_date'] : "-"; ?></td>
                             </tr>
-                        <?php } else if ($row['post'] == "CCTAdmin-1-2025") { ?>
+                        <?php } else if ($row['post'] == "TestCCTAdmin-2-2025") { ?>
                             <tr>
                                 <td width="20%">Typing Speed:</td>
                                 <td width="30%"><?php echo ($row['typing_speed'] != '') ? $row['typing_speed'] . '(' . $row['typing_language'] . ')' : "-"; ?></td>
@@ -1062,7 +1062,7 @@ if ($_SESSION['is_login'] != 'true') {
                                                                                                                                                                                                                                                                                                                             <tr>
                                                                                                                                                                                                                                                                                                                                 <td align="left" colspan="5"><p><strong>Administrative Officer (PA&F) <br/>
                                                                                                                                                                                                                                                                                                                                             INFLIBNET Centre, <br/>
-                                                                                                                                                                                                                                                                                                                                            POST BOX NO. 4, Infocity Area, Gandhinagar - 382007, <br/>Gujarat, INDIA.        
+                                                                                                                                                                                                                                                                                                                                            POST BOX NO. 4, Infocity Area, Gandhinagar - 382007, <br/>Gujarat, INDIA.
                                                                                                                                                                                                                                                                                                                                         </strong></p></td>
                                                                                                                                                                                                                                                                                                                             </tr>-->
 
@@ -1108,7 +1108,7 @@ if ($_SESSION['is_login'] != 'true') {
          var id = $(this).val();
          var hcopy_value = $(this).attr('data-value');
          var user_id = document.getElementById("user_id").value;
-         
+
          $.ajax({
          url: 'hard_copy.php',
          type: 'post',
@@ -1118,7 +1118,7 @@ if ($_SESSION['is_login'] != 'true') {
          user_id : user_id
          },
          dataType: 'json',
-         
+
          success: function (data) {
          if (data == true) {
          alert("Status updated: Hard Copy Received " + hcopy_value);
@@ -1249,5 +1249,5 @@ if ($_SESSION['is_login'] != 'true') {
         });
     }
 </script>
-<?php //session_destroy();         
+<?php //session_destroy();
 ?>

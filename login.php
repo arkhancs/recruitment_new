@@ -507,7 +507,7 @@ if (isset($_POST['Submit'])) {
         $length_of_service_new = substr($length_of_service, 0, 2);
 
         if (($db_age['category'] == "Admin" || $db_age['category'] == "Finance") && $inf_employee == "No") {
-            if ($post == "AOAdmin-1-2023" || $post == "AOFAdmin-1-2023" || $post == "PSAdmin-2-2023" || $post == "CCTAdmin-1-2025" || $post == "MTSAdmin-1-2025") {
+            if ($post == "AOAdmin-1-2023" || $post == "AOFAdmin-1-2023" || $post == "PSAdmin-2-2023" || $post == "TestCCTAdmin-2-2025" || $post == "MTSAdmin-1-2025") {
                 if ($disability == "Yes" && $disability_percentage >= 40 && $caste != "Ex-servicemen" && $type_of_job == "Permanent") {
                     $db_age_new = $db_age['age_limit'] + 15;
                 } else if ($disability == "Yes" && $disability_percentage >= 40 && $caste != "Ex-servicemen" && $type_of_job != "Permanent") {
@@ -821,13 +821,13 @@ if (isset($_POST['Submit'])) {
                             $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                             $mail->Port = 587;                                    // TCP port to connect to
                             $mail->setFrom('no-reply@mail.inflibnet.ac.in', 'INFLIBNET Centre');
-                            $mail->addAddress($email);     // Add a recipient     
+                            $mail->addAddress($email);     // Add a recipient
                             $mail->isHTML(true);
                             $mail->Subject = "Login credentials for the post of $post_name";
 
-                            $message = '<table cellpadding="10" width="100%" border="1">               
+                            $message = '<table cellpadding="10" width="100%" border="1">
                 <tr>
-                <td style="border:none;">      
+                <td style="border:none;">
                 Dear ' . $mail_name . ',<br/><br/>
                 Please find your login credentials for an online application for the post of ' . $post_name . ':<br/>
                 <b>URL: </b><a href="https://recruitment.inflibnet.ac.in/login.php">https://recruitment.inflibnet.ac.in/login.php</a><br/>
@@ -837,10 +837,10 @@ if (isset($_POST['Submit'])) {
                 <tr> <td style="border:none;"> </td> </tr>
                     <tr> <td style="border:none;"> <b>Note:</b> This is an auto generated email. In case of any technical queries please contact: recruitment[at]inflibnet[dot]ac[dot]in</td> </tr>
                  <tr>
-                <td style="border:none;padding-top:25px">      
+                <td style="border:none;padding-top:25px">
                 With regards,<br/>
                 INFLIBNET Centre, Gandhinagar
-                
+
                 </td>
                 </tr>
                 </table>';
@@ -988,13 +988,13 @@ if (isset($_POST['Submit'])) {
                         $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                         $mail->Port = 587;                                    // TCP port to connect to
                         $mail->setFrom('no-reply@mail.inflibnet.ac.in', 'INFLIBNET Centre');
-                        $mail->addAddress($email);     // Add a recipient     
+                        $mail->addAddress($email);     // Add a recipient
                         $mail->isHTML(true);
                         $mail->Subject = "Login credentials for the post of $post_name";
 
-                        $message = '<table cellpadding="10" width="100%" border="1">               
+                        $message = '<table cellpadding="10" width="100%" border="1">
                 <tr>
-                <td style="border:none;">      
+                <td style="border:none;">
                Dear ' . $mail_name . ',<br/><br/>
                 Please find your login credentials for an online application for the post of ' . $post_name . ':<br/>
                 <b>URL: </b><a href="https://recruitment.inflibnet.ac.in/login.php">https://recruitment.inflibnet.ac.in/login.php</a><br/>
@@ -1004,10 +1004,10 @@ if (isset($_POST['Submit'])) {
                 <tr> <td style="border:none;"> </td> </tr>
                     <tr> <td style="border:none;"> <b>Note:</b> This is an auto generated email. In case of any technical queries please contact: recruitment[at]inflibnet[dot]ac[dot]in</td> </tr>
                  <tr>
-                <td style="border:none;padding-top:25px">      
+                <td style="border:none;padding-top:25px">
                 With regards,<br/>
                 INFLIBNET Centre, Gandhinagar
-                
+
                 </td>
                 </tr>
                 </table>';
@@ -1022,7 +1022,7 @@ if (isset($_POST['Submit'])) {
                     //                    $result = mysqli_query($link, $sql);
                     //                    if ($result) {
                     //                        if (mysqli_num_rows($result) == 0) {
-                    //                            
+                    //
                     //                        } else {
                     //                            while ($row = mysqli_fetch_assoc($result)) {
                     //
@@ -1106,27 +1106,27 @@ if (isset($_POST['Submit'])) {
                             $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
                             $mail->Port = 587;                                    // TCP port to connect to
                             $mail->setFrom('no-reply@mail.inflibnet.ac.in', '');
-                            $mail->addAddress($email);     // Add a recipient     
+                            $mail->addAddress($email);     // Add a recipient
                             $mail->isHTML(true);
                             $mail->Subject = "Forget Password: INFLIBNET";
 
-                            $message = '<table cellpadding="10" width="100%" border="1">              
+                            $message = '<table cellpadding="10" width="100%" border="1">
                             <tr>
-                            <td style="border:none;">      
+                            <td style="border:none;">
                             Dear ' . $mail_name . ',  </td>
                             </tr>   <tr>
                             <td style="border:none;">
                             Your password has been reset by the system.<br/>
-                           
+
                             Your new password is : <b>' . $new_password . '</b>
                             <br/>Please login with your application ID(<b>' . $app_id . '</b>) and new password.</td></tr>
                            <tr> <td style="border:none;"> </td> </tr>
                     <tr> <td style="border:none;"> <b>Note:</b> This is an auto generated email. In case of any technical queries please contact: recruitment[at]inflibnet[dot]ac[dot]in</td> </tr>
                  <tr>
-                <td style="border:none;padding-top:25px">      
+                <td style="border:none;padding-top:25px">
                 With regards,<br/>
                 INFLIBNET Centre, Gandhinagar
-                
+
                 </td>
                 </tr>
                             </table>';
