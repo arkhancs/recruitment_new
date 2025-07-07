@@ -89,7 +89,7 @@ $(document).ready(function () {
 
   $("#post").on("change", function () {
     var val1 = document.getElementById("post").value;
-    if (val1 == "CCTAdmin-2-2023") {
+    if (val1 == "TestCCTAdmin-2-2025") {
       $("#stenoGraphy_speed").attr("required", false);
       $("#stenography_certi_no").attr("required", false);
       $("#stenography_certi_date").attr("required", false);

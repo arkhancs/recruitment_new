@@ -177,7 +177,7 @@ if (isset($_SESSION)) {
                     <li>The date of test/interview is liable to change, if circumstances so warrant.</li>
                     <li><b>Candidates are required to carry all original testimonials in respect of Date of Birth proof, Academic (marksheets of qualifying exam and degree certificates), Experience certificates and <u>NOC</u> etc. mentioned in their application, failing which candidates will not be permitted to appear in test/interview.</b></li>
                     <li>Candidates will have to appear in Trade Test (Shorthand dictation at minimum speed of 120 WPM & typing of the same on computer and typing test on computer with 40 WPM) only qualify for interview. Selection will be based on Performance in Personal interview.</li>
-                <?php } else if ($post == 'CCTAdmin-2-2023') { ?>
+                <?php } else if ($post == 'CCTAdmin-1-2025') { ?>
                     <li>The date of written/trade test is liable to change, if circumstances so warrant.</li>
                     <li><b>Candidates are required to carry all original testimonials in respect of Date of Birth proof, Academic (marksheets of qualifying exam and degree certificates), Experience certificates and <u>NOC</u> etc. mentioned in their application, failing which candidates will not be permitted to appear in written/trade test.</b></li>
                     <li>Candidates will have to appear in written/trade Test (minimum 50% in written test will qualify for typing test) followed by typing test on computer with 35 WPM in English/30 WPM in Hindi). Selection will be based on Performance in written test.</li>

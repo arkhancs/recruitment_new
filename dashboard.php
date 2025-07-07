@@ -192,10 +192,12 @@ $dateTimestamp3 = strtotime($admitcardclosed_date);
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="col-md-12 col-sm-12 col-xs-12 buttonGroup">
                         <?php
-                        //  if ($status == 'current' && ($status_check == 'Eligible' || $status_check != 'Provisionally') && $exam_date != '' && ($post == 'SBLS-2-2024') && $year == '2024') {
+                        if ($status == 'current' && ($status_check == 'Eligible' || $status_check != 'Provisionally') && $exam_date != '' && ($post == 'CCTAdmin-1-2025') && $year == '2025') {
                         ?>
-                        <?php if ($status == 'current' && ($status_check == 'Eligible') && $exam_date != '' && ($post == 'SBLS-2-2024') && $year == '2024') { ?>
-                            <?php if ($current_date <= "2025-01-28 10:00:00") { ?>
+                            <?php
+                            // if ($status == 'current' && ($status_check == 'Eligible') && $exam_date != '' && ($post == 'CCTAdmin-1-2025') && $year == '2025') {
+                            ?>
+                            <?php if ($current_date <= "2025-07-03 10:00:00") { ?>
                                 <!-- <a href="admit_card.php" class="borderWhite login-btn btn btn-block blueBtn download_admin_card"><i class="fa fa-download f30"></i> <br>Download Admit Card</a> -->
                                 <a href="admit_card.php" class="borderWhite login-btn btn btn-block blueBtn download_admin_card" onclick="print_admit_card();">
                                     <i class="fa fa-download f30"></i> <br>Download Admit Card

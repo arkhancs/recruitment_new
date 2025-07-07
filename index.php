@@ -114,14 +114,14 @@
                     </div>-->
         <?php } ?>
 
-        <?php if ($current_date1 <= "2025-01-28 10:00:00") { ?>
+        <?php if ($current_date1 <= "2025-07-28 10:00:00") { ?>
           <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
             <div class="buttonGroup text-center">
 
               <center><a href="login.php" class="borderWhite login-btn btn btn-block blueBtn"><i class="fa fa-address-card-o f30"></i> <br>Download Admit Card</a></center>
               <h4 class="postTitle">FOR POST:</h4>
               <ul class="contactBox">
-                <li style="color:white !important"><i class="fa fa-hand-o-right"></i>Advt. No. 02/2024: Scientist B (SBLS-2-2024) </li>
+                <li style="color:white !important"><i class="fa fa-hand-o-right"></i>Advt. No. 01/2025: Clerk-Cum-Typist (CCTAdmin-1-2025) </li>
                 <!-- <li style="color:white !important"><i class="fa fa-hand-o-right"></i>Advt No. 02/2023: Clerk cum Typist </li> -->
               </ul>
             </div>

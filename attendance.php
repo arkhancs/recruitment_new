@@ -7,7 +7,8 @@ if (!isset($_SERVER['HTTP_REFERER'])) {
 include "dbConfig.php";
 $posts = mysqli_real_escape_string($link, $_GET['post_data']);
 
-$sql = "SELECT prsnl.*, othrs.sign FROM prsnl LEFT JOIN othrs on othrs.id=prsnl.id where (prsnl.status_check='Eligible' or prsnl.status_check='Provisionally') and prsnl.post='" . $posts . "' order by prsnl.id";
+// $sql = "SELECT prsnl.*, othrs.sign FROM prsnl LEFT JOIN othrs on othrs.id=prsnl.id where (prsnl.status_check='Eligible' or prsnl.status_check='Provisionally') and prsnl.post='" . $posts . "' order by prsnl.id";
+$sql = "SELECT prsnl.*, othrs.sign FROM prsnl LEFT JOIN othrs on othrs.id=prsnl.id where (prsnl.status_check='Eligible') and prsnl.post='" . $posts . "' order by prsnl.id";
 $result = mysqli_query($link, $sql);
 
 $sql1 = "SELECT Name as postname, year, category,sequence FROM req_experience where post='" . $posts . "'";

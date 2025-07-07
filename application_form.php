@@ -438,6 +438,7 @@ if ($_SESSION['is_login'] == 'true') {
                   <?php } ?>
                 <?php } ?>
               </select>
+
             </div>
 
 
@@ -773,28 +774,24 @@ if ($_SESSION['is_login'] == 'true') {
               </div>
               <div class="col-md-2"><b>Disability Certificate<font style="color:red">*</font></b></div>
               <div class="col-md-4">
-                <?php
-                if ($disability_certi != '') {
+                <?php if ($disability_certi != '') {
                   $style_disability_certi = "visibility: visible;";
                 } else {
                   $style_disability_certi = "visibility: hidden;";
-                }
-                ?>
+                } ?>
                 <input type="file" name="disability_certi" id="disability_certi"></input>
                 <a href="<?php echo $disability_certi; ?>" id="disability_certi_view" style="<?php echo $style_disability_certi; ?>" target="_blank"><b><u>View</u></b></a>
                 <input type="hidden" id="disability_certi1" name="disability_certi1" value="<?php echo isset($vald) ? "$vald" : ""; ?>" />
               </div>
             </div>
             <div class="clearfix"></div>
-            <div id="typing_div" style="display:<?php
-                                                if (isset($post) && ($post == "PSAdmin-2-2023")) {
+            <div id="typing_div" style="display:<?php if (isset($post) && ($post == "PSAdmin-2-2023")) {
                                                   echo 'block';
                                                   $required = "required";
                                                 } else {
                                                   echo 'none';
                                                   $required = "";
-                                                }
-                                                ?>">
+                                                } ?>">
               <div class="col-md-2">
                 <label for="steno" style="text-align:left"><b>StenoGraphy Speed(w.p.m.):<font style="color:red">*</font></b></label>
               </div>
@@ -832,7 +829,7 @@ if ($_SESSION['is_login'] == 'true') {
             </div>
             <div class="clearfix"></div><br />
             <div id="typing_div1" style="display:<?php
-                                                  if (isset($post) && ($post == "CCTAdmin-2-2025" || $post == "PSAdmin-2-2023")) {
+                                                  if (isset($post) && ($post == "TestCCTAdmin-2-2025" || $post == "PSAdmin-2-2023")) {
                                                     echo 'block';
                                                     $required1 = "required";
                                                   } else {
@@ -2465,7 +2462,7 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
       if (document.frmregister.typing_speed.value == "") {
         alert("Please Enter Typing Speed.");
         document.frmregister.typing_speed.focus();
-        return false;
+        return true;
       } else if (document.frmregister.typing_certi.files.length == 0 && typing_certi_view == 'hidden') {
         alert("Please Upload Typing Speed Certificate.");
         document.frmregister.typing_certi.focus();

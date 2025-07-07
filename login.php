@@ -427,56 +427,62 @@ if (isset($_POST['Submit'])) {
     }
 
 
-    $job_location = mysqli_real_escape_string($link, $_POST['job_location']);
-    $job_type = mysqli_real_escape_string($link, $_POST['job_type']);
+    function clean_input($link, $value)
+    {
+        return htmlspecialchars(mysqli_real_escape_string($link, trim($value)), ENT_QUOTES, 'UTF-8');
+    }
 
-    $post = mysqli_real_escape_string($link, $_POST['post']);
-    $nation = mysqli_real_escape_string($link, $_POST["nation"]);
-    $prefix = mysqli_real_escape_string($link, $_POST['prefix']);
-    $surname = mysqli_real_escape_string($link, $_POST["surname"]);
-    $firstname = mysqli_real_escape_string($link, $_POST['fname']);
-    $fatherorhusband = mysqli_real_escape_string($link, $_POST['lastname']);
-    $fathername = mysqli_real_escape_string($link, $_POST["fathername"]);
-    $caste = mysqli_real_escape_string($link, $_POST["caste"]);
-    $issue_year = mysqli_real_escape_string($link, $_POST["issue_year"]);
-    $certi_no = mysqli_real_escape_string($link, $_POST["certi_no"]);
-    $serving = mysqli_real_escape_string($link, $_POST["serving"]);
-    $type_of_service = mysqli_real_escape_string($link, $_POST["type_of_service"]);
-    $dob = mysqli_real_escape_string($link, $_POST["dob"]);
-    $agenew = mysqli_real_escape_string($link, $_POST['agenew']);
-    $sex = mysqli_real_escape_string($link, $_POST["sex"]);
-    $mstatus = mysqli_real_escape_string($link, $_POST["mstatus"]);
-    $email = trim($_POST["email"]);
-    $mobile = mysqli_real_escape_string($link, $_POST["mobile"]);
-    $telephone = mysqli_real_escape_string($link, $_POST["telephone"]);
-    $aadhar_no = mysqli_real_escape_string($link, $_POST["aadhar_no"]);
-    $disability = mysqli_real_escape_string($link, $_POST['disability']);
-    $disability_percentage = mysqli_real_escape_string($link, $_POST['disability_percentage']);
-    $type_of_disability = mysqli_real_escape_string($link, $_POST['type_of_disability']);
-    $address = mysqli_real_escape_string($link, $_POST["address"]);
-    $state = $_POST["state"];
-    $city = mysqli_real_escape_string($link, $_POST["city"]);
-    $pincode = mysqli_real_escape_string($link, $_POST["pincode"]);
-    $same_address = mysqli_real_escape_string($link, $_POST["copy_address"]);
-    $paddress = mysqli_real_escape_string($link, $_POST["paddress"]);
-    $pstate = $_POST["pstate"];
-    $pcity = mysqli_real_escape_string($link, $_POST["pcity"]);
-    $ppincode = mysqli_real_escape_string($link, $_POST["ppincode"]);
-    $type_of_job = mysqli_real_escape_string($link, $_POST["type_of_job"]);
-    $length_of_service = mysqli_real_escape_string($link, $_POST["length_of_service"]);
-    $service_from_date = mysqli_real_escape_string($link, $_POST["service_from_date"]);
-    $service_to_date = mysqli_real_escape_string($link, $_POST["service_to_date"]);
+    $job_location = clean_input($link, $_POST['job_location']);
+    $job_type = clean_input($link, $_POST['job_type']);
 
-    $stenoGraphy_speed = mysqli_real_escape_string($link, $_POST["stenoGraphy_speed"]);
-    $stenography_certi_no = mysqli_real_escape_string($link, $_POST["stenography_certi_no"]);
-    $stenography_certi_date = mysqli_real_escape_string($link, $_POST["stenography_certi_date"]);
-    $typing_speed = mysqli_real_escape_string($link, $_POST["typing_speed"]);
-    $typing_certi_no = mysqli_real_escape_string($link, $_POST["typing_certi_no"]);
-    $typing_certi_date = mysqli_real_escape_string($link, $_POST["typing_certi_date"]);
-    $typing_language = mysqli_real_escape_string($link, $_POST["typing_language"]);
+    $post = clean_input($link, $_POST['post']);
+    $nation = clean_input($link, $_POST["nation"]);
+    $prefix = clean_input($link, $_POST['prefix']);
+    $surname = clean_input($link, $_POST["surname"]);
+    $firstname = clean_input($link, $_POST['fname']);
+    $fatherorhusband = clean_input($link, $_POST['lastname']);
+    $fathername = clean_input($link, $_POST["fathername"]);
+    $caste = clean_input($link, $_POST["caste"]);
+    $issue_year = clean_input($link, $_POST["issue_year"]);
+    $certi_no = clean_input($link, $_POST["certi_no"]);
+    $serving = clean_input($link, $_POST["serving"]);
+    $type_of_service = clean_input($link, $_POST["type_of_service"]);
+    $dob = clean_input($link, $_POST["dob"]);
+    $agenew = clean_input($link, $_POST['agenew']);
+    $sex = clean_input($link, $_POST["sex"]);
+    $mstatus = clean_input($link, $_POST["mstatus"]);
+    $email = clean_input($link, $_POST["email"]);
+    $mobile = clean_input($link, $_POST["mobile"]);
+    $telephone = clean_input($link, $_POST["telephone"]);
+    $aadhar_no = clean_input($link, $_POST["aadhar_no"]);
+    $disability = clean_input($link, $_POST['disability']);
+    $disability_percentage = clean_input($link, $_POST['disability_percentage']);
+    $type_of_disability = clean_input($link, $_POST['type_of_disability']);
+    $address = clean_input($link, $_POST["address"]);
+    $state = clean_input($link, $_POST["state"]);
+    $city = clean_input($link, $_POST["city"]);
+    $pincode = clean_input($link, $_POST["pincode"]);
+    $same_address = clean_input($link, $_POST["copy_address"]);
+    $paddress = clean_input($link, $_POST["paddress"]);
+    $pstate = clean_input($link, $_POST["pstate"]);
+    $pcity = clean_input($link, $_POST["pcity"]);
+    $ppincode = clean_input($link, $_POST["ppincode"]);
+    $type_of_job = clean_input($link, $_POST["type_of_job"]);
+    $length_of_service = clean_input($link, $_POST["length_of_service"]);
+    $service_from_date = clean_input($link, $_POST["service_from_date"]);
+    $service_to_date = clean_input($link, $_POST["service_to_date"]);
 
-    $inf_employee = mysqli_real_escape_string($link, $_POST["inf_employee"]);
-    $payroll_no = mysqli_real_escape_string($link, $_POST["payroll_no"]);
+    $stenoGraphy_speed = clean_input($link, $_POST["stenoGraphy_speed"]);
+    $stenography_certi_no = clean_input($link, $_POST["stenography_certi_no"]);
+    $stenography_certi_date = clean_input($link, $_POST["stenography_certi_date"]);
+    $typing_speed = clean_input($link, $_POST["typing_speed"]);
+    $typing_certi_no = clean_input($link, $_POST["typing_certi_no"]);
+    $typing_certi_date = clean_input($link, $_POST["typing_certi_date"]);
+    $typing_language = clean_input($link, $_POST["typing_language"]);
+
+    $inf_employee = clean_input($link, $_POST["inf_employee"]);
+    $payroll_no = clean_input($link, $_POST["payroll_no"]);
+
 
     $authority = "";
     $app_status = NULL;
@@ -487,17 +493,25 @@ if (isset($_POST['Submit'])) {
     $brawser_h = implode(", ", $ua);
     $regdate = date("d/m/Y H:i:s");
 
-    $sql_check = "SELECT email, post, job_location FROM prsnl WHERE email='$email' AND post='$post' AND job_location='$job_location'";
-    $result_check = mysqli_query($link, $sql_check);
+    // Secure SQL query using prepared statement
+    $stmt_check = $link->prepare("SELECT email, post, job_location FROM prsnl WHERE email = ? AND post = ? AND job_location = ?");
+    $stmt_check->bind_param("sss", $email, $post, $job_location);
+    $stmt_check->execute();
+    $result_check = $stmt_check->get_result();
+
     //    $stmt1 = $link->prepare("SELECT email, post, job_location FROM prsnl WHERE email=? AND post=? AND job_location=?");
     //    $stmt1->bind_param("sss", $email, $post, $job_location);
     //    $stmt1->execute();
     //    $result_check = $stmt1->get_result();
 
     if (mysqli_num_rows($result_check) == 0) {
-        $sql_age_check = "SELECT age_limit, category FROM req_experience WHERE post='$post'";
-        $result_age_check = mysqli_query($link, $sql_age_check);
+        // Secure SQL Injection Protection using prepared statement
+        $stmt_age_check = $link->prepare("SELECT age_limit, category FROM req_experience WHERE post = ?");
+        $stmt_age_check->bind_param("s", $post);
+        $stmt_age_check->execute();
+        $result_age_check = $stmt_age_check->get_result();
         $db_age = mysqli_fetch_assoc($result_age_check);
+
 
         //        $stmt2 = $link->prepare("SELECT age_limit, category FROM req_experience WHERE post=?");
         //        $stmt2->bind_param("s", $post);
@@ -683,8 +697,11 @@ if (isset($_POST['Submit'])) {
 
                         header("Location:" . $_POST['redirect_url']);
                     } else {
-                        $sql = "select max(srno) as sr from prsnl";
-                        $result = mysqli_query($link, $sql);
+                        // Secure version using prepared statement
+                        $stmt = $link->prepare("SELECT MAX(srno) AS sr FROM prsnl");
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
 
                         while ($row = mysqli_fetch_array($result)) {
                             $srno = $row['sr'];
