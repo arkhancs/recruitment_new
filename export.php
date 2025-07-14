@@ -10,6 +10,7 @@ $post = $_POST["post"];
 //$sql = "select prsnl.*,edctn.*,exprn.* from prsnl join edctn on edctn.id=prsnl.id join exprn on exprn.id=prsnl.id where post ='$post' and prsnl.status='current'";
 $sql = "SELECT a.id,CONCAT(surname,' ',a.name,' ',fathername, '\n','(',a.category,') ',a.caste_certino,', ',a.caste_certi_issue_year) as name,"
     . "CONCAT(a.dob,' (',a.age,')') as dob,"
+    . "a.sex as Gender,"
     . "(CASE WHEN c.spec5 != '' THEN 'Yes' ELSE 'No' END) as phd_degree,"
     . "(CASE WHEN c.spec4 != '' THEN 'Yes' ELSE 'No' END) as master_degree,"
     . "(CASE WHEN c.spec3 != '' THEN 'Yes' ELSE 'No' END) as bachelor_degree,"

@@ -44,6 +44,7 @@ $master_certi = "";
 $phd_certi = "";
 $expr_certi = "";
 $file_fees = "";
+$apars_doc = "";
 
 if (isset($_SESSION)) {
   $post = $_SESSION['post'];
@@ -282,6 +283,7 @@ if (isset($_SESSION)) {
   $transaction_ref_no = $_SESSION['transaction_ref_no'];
   $dd_date = $_SESSION['dd_date'];
   $dd_amount = $_SESSION['dd_amount'];
+  $apars_doc = $_SESSION['apars_doc'];
   //            $bank_name = $_SESSION['bank_name'];
   //            $branch_name = $_SESSION['branch_name'];
   //$previous_applied = $_SESSION['previous_applied'];
@@ -347,8 +349,10 @@ if ($_SESSION['is_login'] == 'true') {
 </style>
 <div class="container" style="padding-top:5px;padding-bottom: 100px; border-radius: 5px; ">
   <?php
-  echo $_SESSION['registration_notification'];
-  unset($_SESSION['registration_notification']);
+  if (isset($_SESSION['registration_notification'])) {
+    echo $_SESSION['registration_notification'];
+    unset($_SESSION['registration_notification']);
+  }
   ?>
   <br />
   <div class="col-md-12 mb30">
@@ -406,9 +410,18 @@ if ($_SESSION['is_login'] == 'true') {
             //                                        $query = "select * from req_experience where STR_TO_DATE(closed_date,'%d/%m/%Y') >= STR_TO_DATE('$current_date','%d/%m/%Y') and status='OPEN' AND category ='' AND job_location='" . $joblocation . "' AND job_type='" . $j_type . "'";
             //                                    }
             //                                } else {
-            $query = "select * from req_experience where STR_TO_DATE(closed_date,'%d/%m/%Y') >= STR_TO_DATE('$current_date','%d/%m/%Y') and status='OPEN' and job_type='" . $j_type . "'";
+            // $query = "select * from req_experience where STR_TO_DATE(closed_date,'%d/%m/%Y') >= STR_TO_DATE('$current_date','%d/%m/%Y') and status='OPEN' and job_type='" . $j_type . "'";
+            $query = "SELECT * FROM req_experience
+          WHERE STR_TO_DATE(closed_date,'%d/%m/%Y') >= STR_TO_DATE(?,'%d/%m/%Y')
+          AND status = 'OPEN'
+          AND job_type = ?";
+
+            $stmt = $link->prepare($query);
+            $stmt->bind_param("ss", $current_date, $j_type);
+            $stmt->execute();
             //                                }
-            $result = mysqli_query($link, $query);
+            // $result = mysqli_query($link, $query);
+            $result = $stmt->get_result();
             ?>
             <div class="col-md-2">
               <label for="post" style="text-align:left"> <b>Post applied for:<font style="color:red">*</font></b></label>
@@ -2181,6 +2194,31 @@ if ($_SESSION['is_login'] == 'true') {
                 <input type="hidden" id="file_hidden7" name="file_hidden7" value="<?php echo isset($val7) ? "$val7" : ""; ?>" />
               </td>
             </tr>
+            <?php if ($post == 'SELS-2-2025') { ?>
+              <tr>
+                <td align="center">7.<font style="color:red">*</font>
+                </td>
+                <td colspan="2">
+                  APARs for last 5 years (PDF only, Max 2 MB size)
+                </td>
+                <td>
+                  <?php
+                  if ($apars_doc != '') {
+                    $style_apar = "visibility: visible;";
+                  } else {
+                    $style_apar = "visibility: hidden;";
+                  }
+                  ?>
+                  <input type="file" name="file_apars" id="file_apars" class="form-control" accept="application/pdf"
+                    <?php echo ($apars_doc == "") ? "required" : ""; ?> />
+                  <a href="<?php echo $apars_doc; ?>" style="<?php echo $style_apar; ?>" id="file_anchor_apar" target="_blank">
+                    <b><u>View</u></b>
+                  </a>
+                  <input type="hidden" id="file_hidden_apar" name="file_hidden_apar" value="<?php echo isset($apars_doc) ? "$apars_doc" : ""; ?>" />
+                </td>
+              </tr>
+            <?php } ?>
+
             <tr>
 
               <td colspan="4">
@@ -3488,7 +3526,7 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
     var category_html = '';
     category_html += '<input type="hidden" name="session_caste" id="session_caste" value="<?php echo $caste; ?>">';
 
-    if (post == 'SCLS-1-2024') {
+    if (post == 'SDCS-2-2025' || post == 'SAOAAdmin-2-2025') {
       if (caste != '') {
         category_html += '<select class="form-control" name="caste" id="caste" onchange="showDiv(this.value, ' + j_type + ')" readonly>';
         category_html += '<option value="">Please Select</option>';

@@ -263,6 +263,7 @@ if (isset($_SESSION)) {
                 $_SESSION['dd_amount'] = $row['dd_amount'];
 
                 $_SESSION['fees_receipt'] = $row['fees_receipt'];
+                $_SESSION['apars_doc'] = $row['apars_doc'];
                 $_SESSION['grandtotal'] = $row['grandtotal'];
                 $_SESSION['expr_certi'] = $row['expr_certi'];
                 $_SESSION['app_id'] = $row['app_id'];

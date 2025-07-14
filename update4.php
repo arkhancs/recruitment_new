@@ -40,6 +40,7 @@ if (mysqli_num_rows($result) == 0) {
         $file_5_path = $row['dob_proof'];
         $file_6_path = $row['fees_receipt'];
         $file_7_path = $row['castecerti'];
+        $file_apars_path = $row['apars_doc'];
     }
 }
 
@@ -100,7 +101,36 @@ if ($_FILES["file_5"]["name"]) {
 //    move_uploaded_file($_FILES["file_7"]["tmp_name"], $file_7_path);
 //}
 
-$sql = "update othrs set sign='$file_2_path', dob_proof ='$file_5_path', noc='$file_3_path',othrdoc='$file_4_path', transaction_ref_no='$transaction_ref_no', dd_date='$dd_date', dd_amount='$dd_amount', fees_receipt='$file_6_path' where id='$reg_id'";
+if ($_FILES["file_apars"]["name"]) {
+    $temp_apar = explode(".", $_FILES["file_apars"]["name"]);
+    $newfilename = md5($reg_id) . md5('apars') . md5($enc_current_date) . '.' . end($temp_apar);
+    $file_apars_path = 'uploads/apars/' . $newfilename;
+    move_uploaded_file($_FILES["file_apars"]["tmp_name"], $file_apars_path);
+} else {
+    // If no new upload, retain existing value (optional)
+    $file_apars_path = '';
+}
+
+
+// $sql = "update othrs set sign='$file_2_path', dob_proof ='$file_5_path', noc='$file_3_path',othrdoc='$file_4_path', transaction_ref_no='$transaction_ref_no', dd_date='$dd_date', dd_amount='$dd_amount', fees_receipt='$file_6_path' where id='$reg_id'";
+
+$sql = "UPDATE othrs SET
+            sign='$file_2_path',
+            dob_proof='$file_5_path',
+            noc='$file_3_path',
+            othrdoc='$file_4_path',
+            transaction_ref_no='$transaction_ref_no',
+            dd_date='$dd_date',
+            dd_amount='$dd_amount',
+            fees_receipt='$file_6_path'";
+
+if (!empty($file_apars_path)) {
+    $sql .= ", apars_doc='$file_apars_path'";
+}
+
+$sql .= " WHERE id='$reg_id'";
+
+
 $result_update = mysqli_query($link, $sql);
 
 $sql = "update prsnl set photo='$file_1_path' where id='$reg_id'";
@@ -128,6 +158,7 @@ if ($result_update) {
             //$_SESSION['previous_applied'] = $row['previous_applied'];
             //$_SESSION['previous_app_id'] = $row['previous_app_id'];
             $_SESSION['fees_receipt'] = $row['fees_receipt'];
+            $_SESSION['apars_doc'] = $row['apars_doc'];
             //$_SESSION['castecerti'] = $row['castecerti'];
             header("location:application_form.php");
         }
