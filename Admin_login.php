@@ -13,27 +13,36 @@ header("Content-Security-Policy: default-src 'self' https: data: 'unsafe-inline'
 header_remove("X-Powered-By");
 ini_set("session.cookie_secure", 1);
 include "dbConfig.php";
+include "checker_input.php";
 
 date_default_timezone_set('Asia/Kolkata');
 include "get_ip.php";
 
 if (isset($_POST['Submit'])) {
     //$result = "";
-    $regid = trim(mysqli_real_escape_string($link, $_POST['regid']));
-    $password = trim(mysqli_real_escape_string($link, $_POST['password']));
+    // $regid = trim(mysqli_real_escape_string($link, $_POST['regid']));
+    // $password = trim(mysqli_real_escape_string($link, $_POST['password']));
+    // $password1 = md5($password);
+
+    $result = "";
+    $regid    = clean_input($link, $_POST['regid'] ?? '', 'Registration ID');
+    $password = clean_input($link, $_POST['password'] ?? '', 'Password');
     $password1 = md5($password);
 
-    $sql = "select * From login where username ='$regid' and password = '$password1' and status = 'Current'";
-    $result = mysqli_query($link, $sql);
-    if (mysqli_num_rows($result) == 1) {
+    $stmt = $link->prepare("SELECT * FROM login WHERE username = ? AND password = ? AND status = 'Current'");
+    $stmt->bind_param("ss", $regid, $password1);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows === 1) {
         session_start();
         if ($_POST["captcha_code"] != $_SESSION["code"]) {
             $msg = " Incorrect Captcha.";
         } else {
             while ($row = mysqli_fetch_assoc($result)) {
                 $user_id = $row['username'];
-                $sql_ua = "insert into history_admin VALUES(0,'$ua_browser','$ua_version','$ua_platform','$ua_ip','$ua_date','$ua_time','$user_id',NULL,'Login')";
-                $result_ua = mysqli_query($link, $sql_ua);
+                $stmt_ua = $link->prepare("INSERT INTO history_admin VALUES (0, ?, ?, ?, ?, ?, ?, ?, NULL, 'Login')");
+                $stmt_ua->bind_param("ssssssss", $ua_browser, $ua_version, $ua_platform, $ua_ip, $ua_date, $ua_time, $user_id);
+                $result_ua = $stmt_ua->execute();
 
                 session_start();
                 $_SESSION['user'] = $row['username'];
@@ -107,12 +116,12 @@ if ($allowip == true) {
 <div class="container">
     <div class="login-form">
         <form name="form1" method="post" onSubmit="return check_captcha();">
-            <h2 class="text-center">Admin Panel</h2>   
+            <h2 class="text-center">Admin Panel</h2>
             <div class="form-group">
-                <span style="color:red"><?php echo $msg; ?></span> 
+                <span style="color:red"><?php echo $msg; ?></span>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="Username" id="regid"  name="regid" required="required">
+                <input type="text" class="form-control" placeholder="Username" id="regid" name="regid" required="required">
             </div>
 
 
@@ -120,10 +129,10 @@ if ($allowip == true) {
                 <input type="password" class="form-control" placeholder="Password" id="password" name="password" required="required">
             </div>
 
-            <div class="form-group">  
+            <div class="form-group">
                 <img id="captcha_img" src="captcha.php" alt="CAPTCHA" height="32" width="80" />
                 <a href='javascript: refresh_captcha();'><img id="" src="images/refresh.png" height="40" width="40" /></a>
-                <input type="text" id="captcha_code" name="captcha_code" class="form-control" placeholder="Enter captcha" autocomplete="off"   />
+                <input type="text" id="captcha_code" name="captcha_code" class="form-control" placeholder="Enter captcha" autocomplete="off" />
             </div>
 
             <div class="form-group">
@@ -132,7 +141,7 @@ if ($allowip == true) {
             <div class="clearfix">
                 <p class="text-center pull-left"><a href="index.php">Go to Home</a></p>
 
-            </div>   
+            </div>
 
         </form>
 
@@ -141,6 +150,7 @@ if ($allowip == true) {
 </div>
 <?php include 'footer.php'; ?>
 </body>
+
 </html>
 <script>
     function check_captcha() {
@@ -151,29 +161,28 @@ if ($allowip == true) {
             return true;
         }
     }
-//    $("#captcha_code").focusout(function (event) {
-//
-//        $.ajax({
-//            url: 'validate_captcha.php',
-//            data: {code: $("input[name='captcha_code']").val()},
-//            dataType: 'json',
-//            type: 'post',
-//            success: function (data) {
-//                if (data == "true") {
-//                    return true;
-//                    //alert("Captcha is Good");
-//                }
-//                if (data == "false") {
-//                    event.preventDefault();
-//                    alert("Captcha is Incorrect.");
-//
-//                    return false;
-//                }
-//            }
-//        });
-//    });
-    function refresh_captcha()
-    {
+    //    $("#captcha_code").focusout(function (event) {
+    //
+    //        $.ajax({
+    //            url: 'validate_captcha.php',
+    //            data: {code: $("input[name='captcha_code']").val()},
+    //            dataType: 'json',
+    //            type: 'post',
+    //            success: function (data) {
+    //                if (data == "true") {
+    //                    return true;
+    //                    //alert("Captcha is Good");
+    //                }
+    //                if (data == "false") {
+    //                    event.preventDefault();
+    //                    alert("Captcha is Incorrect.");
+    //
+    //                    return false;
+    //                }
+    //            }
+    //        });
+    //    });
+    function refresh_captcha() {
 
         $("#captcha_img").replaceWith('<img id="captcha_img" src="captcha.php" alt="CAPTCHA" height="40" width="100" />');
     }

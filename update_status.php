@@ -6,6 +6,7 @@ if (!isset($_SERVER['HTTP_REFERER'])) {
 }
 error_reporting(0);
 include('dbConfig.php');
+include "checker_input.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -20,19 +21,40 @@ if (isset($_POST)) {
     date_default_timezone_set('Asia/Kolkata');
     $date = date("d/m/Y H:i:s");
 
-    $reg_id = mysqli_real_escape_string($link, $_POST['app_id_other']);
-    $ref1 = mysqli_real_escape_string($link, $_POST['txtref1']);
-    $ref2 = mysqli_real_escape_string($link, $_POST['txtref2']);
-    $other_info = mysqli_real_escape_string($link, $_POST['txtinfo']);
-    $detained = mysqli_real_escape_string($link, $_POST['detained']);
-    $detained_details = mysqli_real_escape_string($link, $_POST['detained_details']);
-    $declaration = $_POST['declaration'] != null ? 'Yes' : 'No';
+    $reg_id = clean_input($link, $_POST['app_id_other'] ?? '', 'Application ID');
 
-    $sql = "UPDATE othrs SET ref1='$ref1', ref2='$ref2', detained='$detained', detained_details='$detained_details', other_info='$other_info', declaration='$declaration' WHERE id='$reg_id'";
-    $result_update1 = mysqli_query($link, $sql);
+    if (!isset($_POST['txtref1']) || trim($_POST['txtref1']) === '') {
+        echo json_encode(['status' => 'error', 'message' => 'Reference 1 is required.']);
+        exit;
+    }
+    $ref1 = clean_input($link, $_POST['txtref1'], 'Reference 1');
+
+    if (!isset($_POST['txtref2']) || trim($_POST['txtref2']) === '') {
+        echo json_encode(['status' => 'error', 'message' => 'Reference 2 is required.']);
+        exit;
+    }
+    $ref2 = clean_input($link, $_POST['txtref2'], 'Reference 2');
+
+    $other_info       = clean_input($link, $_POST['txtinfo'] ?? '', 'Other Information');
+    $detained         = clean_input($link, $_POST['detained'] ?? '', 'Detained');
+    $detained_details = clean_input($link, $_POST['detained_details'] ?? '', 'Detained Details');
+    $declaration      = isset($_POST['declaration']) ? 'Yes' : 'No';
+
+    // $sql = "UPDATE othrs SET ref1='$ref1', ref2='$ref2', detained='$detained', detained_details='$detained_details', other_info='$other_info', declaration='$declaration' WHERE id='$reg_id'";
+    // $result_update1 = mysqli_query($link, $sql);
+    $sql = "UPDATE othrs SET ref1 = ?, ref2 = ?, detained = ?, detained_details = ?, other_info = ?, declaration = ? WHERE id = ?";
+    $stmt = mysqli_prepare($link, $sql);
+    mysqli_stmt_bind_param($stmt, 'sssssss', $ref1, $ref2, $detained, $detained_details, $other_info, $declaration, $reg_id);
+    $result_update1 = mysqli_stmt_execute($stmt);
+
 
     $check1 = "SELECT a.id,b.id,c.id,d.id FROM prsnl a INNER JOIN exprn b ON b.id = a.id INNER JOIN edctn c ON c.id = a.id INNER JOIN othrs d ON d.id = a.id WHERE a.id='$reg_id' AND b.id='$reg_id' AND c.id='$reg_id' AND d.id='$reg_id' AND a.id LIKE '{$_SESSION['post']}%'";
-
+    // $post_like = $_SESSION['post'] . '%';
+    // $check1 = "SELECT a.id, b.id, c.id, d.id FROM prsnl a INNER JOIN exprn b ON b.id = a.id INNER JOIN edctn c ON c.id = a.id INNER JOIN othrs d ON d.id = a.id WHERE a.id = ? AND b.id = ? AND c.id = ? AND d.id = ? AND a.id LIKE ?";
+    // $stmt = mysqli_prepare($link, $check1);
+    // mysqli_stmt_bind_param($stmt, 'sssss', $reg_id, $reg_id, $reg_id, $reg_id, $post_like);
+    // mysqli_stmt_execute($stmt);
+    // $result_check1 = mysqli_stmt_get_result($stmt);
     // $check2 = " SELECT a.id, a.dob, TIMESTAMPDIFF(YEAR, STR_TO_DATE(a.dob, '%d/%m/%Y'), '2024-08-23') AS age FROM prsnl a WHERE STR_TO_DATE(a.dob, '%d/%m/%Y') IS NOT NULL AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(a.dob, '%d/%m/%Y'), '2024-08-23') <= 35 AND a.id = '" . $reg_id . "' AND a.id LIKE '{$_SESSION['post']}%'";
 
     $post = mysqli_real_escape_string($link, $_SESSION['post']);
@@ -43,7 +65,12 @@ if (isset($_POST)) {
     $closed_date_admin = $row_post_details['closed_date_admin'];
 
     $check2 = "SELECT a.id, a.dob, TIMESTAMPDIFF(YEAR, STR_TO_DATE(a.dob, '%d/%m/%Y'), '$closed_date_admin') AS age FROM prsnl a WHERE STR_TO_DATE(a.dob, '%d/%m/%Y') IS NOT NULL AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(a.dob, '%d/%m/%Y'), '$closed_date_admin') <= $age_limit AND a.id = '$reg_id' AND a.id LIKE '{$post}%'; ";
-
+    // $post_like = $post . '%';
+    // $check2 = "SELECT a.id, a.dob, TIMESTAMPDIFF(YEAR, STR_TO_DATE(a.dob, '%d/%m/%Y'), ?) AS age FROM prsnl a WHERE STR_TO_DATE(a.dob, '%d/%m/%Y') IS NOT NULL AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(a.dob, '%d/%m/%Y'), ?) <= ? AND a.id = ? AND a.id LIKE ?";
+    // $stmt2 = mysqli_prepare($link, $check2);
+    // mysqli_stmt_bind_param($stmt2, 'ssiss', $closed_date_admin, $closed_date_admin, $age_limit, $reg_id, $post_like);
+    // mysqli_stmt_execute($stmt2);
+    // $result_check2 = mysqli_stmt_get_result($stmt2);
     // $check3 = " SELECT a.id, SUM(TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from1, '%d/%m/%Y'), STR_TO_DATE(b.to1, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from2, '%d/%m/%Y'), STR_TO_DATE(b.to2, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from3, '%d/%m/%Y'), STR_TO_DATE(b.to3, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from4, '%d/%m/%Y'), STR_TO_DATE(b.to4, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from5, '%d/%m/%Y'), STR_TO_DATE(b.to5, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from6, '%d/%m/%Y'), STR_TO_DATE(b.to6, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from7, '%d/%m/%Y'), STR_TO_DATE(b.to7, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from8, '%d/%m/%Y'), STR_TO_DATE(b.to8, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from9, '%d/%m/%Y'), STR_TO_DATE(b.to9, '%d/%m/%Y')) + TIMESTAMPDIFF(MONTH, STR_TO_DATE(b.from10, '%d/%m/%Y'), STR_TO_DATE(b.to10, '%d/%m/%Y'))) / 12 AS total_years FROM prsnl a INNER JOIN exprn b ON a.id = b.id WHERE a.id = '" . $reg_id . "' GROUP BY a.id HAVING total_years >= 1 ";
 
     $query_total_expr = "SELECT total_expr FROM req_experience WHERE post = '$post' LIMIT 1";

@@ -493,6 +493,19 @@
                         </td>
                     </tr>
 
+
+                    <tr>
+                        <td align="center"></td>
+                        <td>(5) Any other document[s]</td>
+                        <td>Yes</td>
+                        <td>No</td>
+                        <td width="10%">
+                            <?php if ($row['othrdoc'] != '') { ?>
+                                <a target="_blank" href="<?php echo $row['othrdoc']; ?>">View</a>
+                            <?php } ?>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td align="center"></td>
                         <td colspan="4"><strong>Note:</strong> Incomplete and/or errorneous application are likely to be summarily rejected. If any query is not applicable to you, please write NA against it.</td>

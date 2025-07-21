@@ -226,10 +226,13 @@ error_reporting(0);
 							<!--<a href="<?php echo $row['fees_receipt']; ?>" target="_blank">View Receipt</a>-->
 						</div>
 						<div class="col-md-4">
-							<b>Transaction Date (DD/MM/YYYY): </b><?php echo date("d/m/Y", strtotime($row['dd_date'])); ?>
+							<strong>Transaction Date (DD/MM/YYYY):</strong>
+							<?php echo ($row['dd_date'] !== 'NA' && !empty($row['dd_date']) && $row['dd_date'] !== '0000-00-00')
+								? date("d/m/Y", strtotime($row['dd_date']))
+								: 'NA'; ?>
 						</div>
 						<div class="col-md-4">
-							<b>Transaction Amount : </b><?php echo $row['dd_amount']; ?> Rs/-
+							<strong>Transaction Amount:</strong> Rs. <?php echo htmlspecialchars($row['dd_amount']); ?>/-
 						</div>
 						<!--                                <div class="col-md-4">
                                                                     <b>Bank Name : </b><?php echo $row['bank_name'] . ', ' . $row['branch_name']; ?>
@@ -964,6 +967,20 @@ error_reporting(0);
 							<?php } ?>
 						</td>
 					</tr>
+					<?php if ($row['post'] == 'SELS-2-2025') { ?>
+						<tr>
+							<td align="center"></td>
+							<td>(11) APARs for last 5 years</td>
+							<td>Yes</td>
+							<td>No</td>
+							<td width="10%">
+								<?php if (!empty($row['apars_doc'])) { ?>
+									<a target="_blank" href="<?php echo $row['apars_doc']; ?>">View</a>
+								<?php } ?>
+							</td>
+						</tr>
+					<?php } ?>
+
 
 					<tr>
 						<td align="center"></td>

@@ -15,9 +15,9 @@ $(document).ready(function () {
 
         changeMonth: true,
         changeYear: true,
-        yearRange: '1940:2008',
+        yearRange: '1940:2005',
         // yearRange: '1940:2008',
-        defaultDate: '01/01/1940'
+        defaultDate: '01/01/1950'
 
     });
 
@@ -27,7 +27,7 @@ $(document).ready(function () {
         changeMonth: true,
         changeYear: true,
         yearRange: '1940:2025',
-        defaultDate: '01/01/1940'
+        defaultDate: '01/01/1950'
     });
 
     $('#service_to_date').datepicker({
@@ -36,16 +36,16 @@ $(document).ready(function () {
         changeMonth: true,
         changeYear: true,
         yearRange: '1940:2025',
-        defaultDate: '01/01/1940'
+        defaultDate: '01/01/1950'
     });
 
     var year = (new Date).getFullYear();
     $("#dd_date").datepicker({
         changeMonth: true,
         changeYear: true,
-        minDate: new Date(2025, 01 - 1),
-        //yearRange: '-1:+0',
-        maxDate: 0,
+        // minDate: new Date(2025, 01 - 1),
+        minDate: new Date(2025, 6, 19),        //yearRange: '-1:+0',
+        // maxDate: 0,
         numberOfMonths: 1,
         onClose: function () {
             $("#dd_date").datepicker();
@@ -136,7 +136,7 @@ $(document).ready(function () {
     });
 
     function getDOB(dateString) {
-        var now = new Date('2025, 07, 12');
+        var now = new Date('2025, 08, 08');
         var today = new Date(now.getYear(), now.getMonth(), now.getDate());
 
         var yearNow = now.getYear();

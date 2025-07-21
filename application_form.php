@@ -30,6 +30,7 @@ function my_exception_handler($e)
 }
 
 include 'header.php';
+include "checker_input.php";
 
 $photo = "";
 $sign = "";
@@ -1127,8 +1128,6 @@ if ($_SESSION['is_login'] == 'true') {
               </td>
             </tr>
 
-
-
             <?php if ($post == "MTSAdmin-1-2025") { ?>
               <tr>
                 <td align="left">1.1 <font style='color:red'><?php echo ($post == 'MTSAdmin-1-2025') ? '*' : ''; ?></font>
@@ -1981,13 +1980,35 @@ if ($_SESSION['is_login'] == 'true') {
 
             <tr>
               <td colspan="4" class="text-center">
-                <a href="https://www.onlinesbi.sbi/sbicollect/icollecthome.htm?corpID=1734565"
+                <!-- <a href="https://www.onlinesbi.sbi/sbicollect/icollecthome.htm?corpID=1734565"
                   target="_blank"
                   class="btn btn-success"
                   onclick="return confirm('FEES FOR SC, ST, EX-SERVICEMAN, Female & PwBD (more than 40% permanent disability) Rs. 0 AND FEES FOR ALL OTHERS INCLUDING UNRESERVED (GENERAL), OBC,  ETC. RS. 1000')"
                   <?php echo $is_fee_waived ? 'style="pointer-events: none; opacity: 0.5; cursor: not-allowed;" disabled' : ''; ?>>
                   Click here to pay fees online
-                </a>
+                </a> -->
+                <?php
+                $active_link_url = '';
+                $q = "SELECT payment_url FROM payment_links WHERE status = 'active' ORDER BY id DESC LIMIT 1";
+                $res = mysqli_query($link, $q);
+                if ($res && mysqli_num_rows($res) > 0) {
+                  $row = mysqli_fetch_assoc($res);
+                  $active_link_url = $row['payment_url'];
+                }
+                ?>
+
+                <?php if ($active_link_url): ?>
+                  <a href="<?php echo htmlspecialchars($active_link_url); ?>"
+                    target="_blank"
+                    class="btn btn-success"
+                    onclick="return confirm('FEES FOR SC, ST, EX-SERVICEMAN, Female & PwBD (more than 40% permanent disability) Rs. 0 AND FEES FOR ALL OTHERS INCLUDING UNRESERVED (GENERAL), OBC, ETC. RS. 1000')"
+                    <?php echo $is_fee_waived ? 'style="pointer-events: none; opacity: 0.5; cursor: not-allowed;" disabled' : ''; ?>>
+                    Click here to pay fees online
+                  </a>
+                <?php else: ?>
+                  <div class="alert alert-warning">Payment link is not available right now.</div>
+                <?php endif; ?>
+
 
                 <div class="bg-info" style="padding: 10px 20px; margin-top: 8px;">
                   <strong>
@@ -2021,12 +2042,12 @@ if ($_SESSION['is_login'] == 'true') {
                 $is_fee_waived = ($sex == 'Female' || $caste == "SC" || $caste == "ST" || ($disability == "Yes" && $disability_percentage >= 40));
                 ?>
                 Transaction Number <span style="color:red">(Please enter unique number only. For Example: DUL1234567) </span><br />
-                <input type="text" name="transaction_pref" id="transaction_pref" maxlength="3" placeholder="DUC/DUK/DUL" class="form-control"
+                <!-- <input type="text" name="transaction_pref" id="transaction_pref" maxlength="3" placeholder="DUC/DUK/DUL" class="form-control"
                   value="<?php echo $is_fee_waived ? "NA" : ($transaction_ref_no_pref != "" && $transaction_ref_no != "" ? $transaction_ref_no_pref : "DUL"); ?>"
-                  <?php echo $is_fee_waived ? 'readonly' : 'required'; ?>></input>
+                  <?php echo $is_fee_waived ? 'readonly' : 'required'; ?>></input> -->
                 <input type="text" name="transaction_ref_no" maxlength="10" id="transaction_ref_no" placeholder="Transaction number only Example, 123456"
                   class="form-control"
-                  value="<?php echo $is_fee_waived ? "NA" : (isset($transaction_ref_no) ? $transaction_ref_no_new : ""); ?>"
+                  value="<?php echo $is_fee_waived ? "NA" : (isset($transaction_ref_no) ? $transaction_ref_no : ""); ?>"
                   <?php echo $is_fee_waived ? 'readonly' : 'required'; ?>></input>
                 <label id="msg_ref_no" style="width: 100%; color: red; text-align: left;"></label>
               </td>
@@ -2055,9 +2076,6 @@ if ($_SESSION['is_login'] == 'true') {
                   <!-- Hidden field to send value when dropdown is disabled -->
                   <input type="hidden" name="dd_amount" value="0">
                 <?php } ?>
-
-
-
               </td>
               <td colspan="2" <?php echo $is_fee_waived ? 'style="display:none;"' : ''; ?>>
                 <?php
@@ -2337,8 +2355,31 @@ if ($_SESSION['is_login'] == 'true') {
             </div>
         </div>-->
 <div id="dialog" style="display: none;" align="center">
-  <strong style="color:green">Your application has been submitted successfully, You are now being redirect to view/print page.</strong> <br><br>
-  <strong style="color:red">The hardcopy of the online Application along with legible/readable copies of all self-attested testimonials, certificates and all supporting documents should reach to "Recruitment Cell, INFLIBNET Centre, OPP.NIFT, Infocity, Gandhinagar, Gujarat-382007" on or before 23/02/2025 upto 06.00 PM, failing which the application will be rejected. <br />Application not made online and print out of online Application along with all testimonials not received will be summarily rejected.</strong>
+  <!-- <strong style="color:green">Your application has been submitted successfully, You are now being redirect to view/print page.</strong> <br><br>
+  <strong style="color:red">The hardcopy of the online Application along with legible/readable copies of all self-attested testimonials, certificates and all supporting documents should reach to "Recruitment Cell, INFLIBNET Centre, OPP.NIFT, Infocity, Gandhinagar, Gujarat-382007" on or before 23/02/2025 upto 06.00 PM, failing which the application will be rejected. <br />Application not made online and print out of online Application along with all testimonials not received will be summarily rejected.</strong> -->
+
+  <?php
+  // Ensure session is started and open_date_admin is set
+  $open_date = isset($_SESSION['open_date_admin']) ? $_SESSION['open_date_admin'] : null;
+
+  if ($open_date) {
+    $last_date = date('d/m/Y', strtotime($open_date . ' +30 days'));
+  } else {
+    $last_date = 'DD/MM/YYYY'; // fallback text if not set
+  }
+  ?>
+
+  <strong style="color:green">
+    Your application has been submitted successfully, You are now being redirected to the view/print page.
+  </strong>
+  <br><br>
+  <strong style="color:red">
+    The hardcopy of the online Application along with legible/readable copies of all self-attested testimonials, certificates and all supporting documents should reach to "Recruitment Cell, INFLIBNET Centre, OPP.NIFT, Infocity, Gandhinagar, Gujarat-382007" on or before <?php echo $last_date; ?> up to 06.00 PM, failing which the application will be rejected.
+    <br />
+    Application not made online and print out of online Application along with all testimonials not received will be summarily rejected.
+  </strong>
+
+
   </br></br>
   <input type="button" id="btnHide" value="Ok" class="btn btn-sm btn-primary" />
 </div>
@@ -2686,6 +2727,16 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
             refresh_captcha_e();
             return false;
           } else {
+
+            try {
+              var res = JSON.parse(data);
+              if (res.status === 'error') {
+                alert(res.message);
+                return false;
+              }
+            } catch (e) {
+              // not a JSON error, proceed as normal
+            }
             //var post_val = $('#post option:selected').val();
             var post_val = document.getElementById("post").value;
             var app_id = document.getElementById("app_id_edu").value;
@@ -2781,6 +2832,15 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
           other_info: other_info
         },
         success: function(response) {
+          try {
+            var res = JSON.parse(data);
+            if (res.status === 'error') {
+              alert(res.message);
+              return false;
+            }
+          } catch (e) {
+            // not a JSON error, proceed as normal
+          }
           if (response == "true") {
             alert("Data Saved successfully.");
             return true;
@@ -2989,6 +3049,17 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
             $(".preload").show();
           },
           success: function(data) {
+
+            try {
+              var res = JSON.parse(data);
+              if (res.status === 'error') {
+                alert(res.message);
+                return false;
+              }
+            } catch (e) {
+              // not a JSON error, proceed as normal
+            }
+
             if (data == "true") {
               $('#dialog').dialog('open');
               $("#btnHide").click(function() {
@@ -3126,6 +3197,21 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
     if (Math.round(document.getElementById("file_4").files[0].size / 1024) > 400) {
       alert("Other Document size should be less than 400 KB.");
       document.getElementById("file_4").value = null;
+    }
+  });
+  $('#file_apars').change(function() {
+    var file_name = $(this).val();
+    var fileExtension = file_name.substr((file_name.lastIndexOf('.') + 1));
+    var extension_array = ['pdf', 'PDF'];
+    if (extension_array.indexOf(fileExtension) == -1) {
+      alert("Please upload only PDF file for APARs.");
+      document.getElementById("file_apars").value = null;
+      return;
+    }
+    if (Math.round(document.getElementById("file_apars").files[0].size / 1024) > 2048) {
+      alert("APARs file size should be less than 2 MB.");
+      document.getElementById("file_apars").value = null;
+      return;
     }
   });
   $('#caste_certi').change(function() {
@@ -3313,6 +3399,17 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
             refresh_captcha_ud();
             return false;
           } else {
+
+            try {
+              var res = JSON.parse(data);
+              if (res.status === 'error') {
+                alert(res.message);
+                return false;
+              }
+            } catch (e) {
+              // not a JSON error, proceed as normal
+            }
+
             $("#transaction_ref_no").prop("readonly", true);
             $("#li5").addClass("active");
             $("#li3").removeClass("active");
@@ -3331,32 +3428,32 @@ $is_logged_in = isset($_SESSION['is_login']) && ($_SESSION['is_login'] === true 
     }
   }
 
-  $('#transaction_ref_no').focusout(function() {
-    var transaction_pref = $("#transaction_pref").val();
-    var transaction_ref_no = $("#transaction_ref_no").val();
-    var app_id_docs = $("#app_id_docs").val();
-    $.ajax({
-      url: 'check_reference.php',
-      data: {
-        transaction_pref: transaction_pref,
-        transaction_ref_no: transaction_ref_no,
-        app_id_docs: app_id_docs
-      },
-      dataType: 'json',
-      type: 'post',
-      success: function(response) {
+  // $('#transaction_ref_no').focusout(function() {
+  //   // var transaction_pref = $("#transaction_pref").val();
+  //   var transaction_ref_no = $("#transaction_ref_no").val();
+  //   var app_id_docs = $("#app_id_docs").val();
+  //   $.ajax({
+  //     url: 'check_reference.php',
+  //     data: {
+  //       // transaction_pref: transaction_pref,
+  //       transaction_ref_no: transaction_ref_no,
+  //       app_id_docs: app_id_docs
+  //     },
+  //     dataType: 'json',
+  //     type: 'post',
+  //     success: function(response) {
 
-        if (response == "false") {
-          $("#msg_ref_no").html('Transaction number must be unique.');
-          document.getElementById("transaction_ref_no").focus();
-          return false;
-        } else {
-          $("#msg_ref_no").html('');
-          return true;
-        }
-      }
-    });
-  })
+  //       if (response == "false") {
+  //         $("#msg_ref_no").html('Transaction number must be unique.');
+  //         document.getElementById("transaction_ref_no").focus();
+  //         return false;
+  //       } else {
+  //         $("#msg_ref_no").html('');
+  //         return true;
+  //       }
+  //     }
+  //   });
+  // })
 
   $('#previous_id').focusout(function() {
     var previous_id = $("#previous_id").val();

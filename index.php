@@ -8,30 +8,16 @@
         $current_date = date("d/m/Y H:i:s");
         $current_date1 = date('Y-m-d H:i:s');
 
-        //                            $sql = "select count(*) as open_cs, job_type from req_experience where STR_TO_DATE(closed_date,'%d/%m/%Y %H:%i:%s') >= STR_TO_DATE('$current_date','%d/%m/%Y %H:%i:%s') and category = 'CS' and job_location = 'INFLIBNET, Gandhinagar' and status='OPEN'";
-        //                            $result = mysqli_query($link, $sql);
-        //                            $row = mysqli_fetch_assoc($result);
-        //                            $count_open_cs = $row['open_cs'];
-        //                            $job_type = $row['job_type'];
-        //
-        //                            $sql = "select count(*) as open_ls, job_type from req_experience where STR_TO_DATE(closed_date,'%d/%m/%Y') >= STR_TO_DATE('$current_date','%d/%m/%Y') and category = 'LS' and job_location = 'INFLIBNET, Gandhinagar' and status='OPEN'";
-        //                            $result = mysqli_query($link, $sql);
-        //                            $row = mysqli_fetch_assoc($result);
-        //                            $count_open_ls = $row['open_ls'];
-        //                            $job_type = $row['job_type']; count(*) as permanent,  $count_permanent = $row_p['permanent'];
+        $stmt_p = $link->prepare("SELECT DISTINCT job_type, open_date, open_date_admin, closed_date_admin, advertisement_title, advertisement_url, status FROM req_experience WHERE closed_date_admin >= ? AND status = 'OPEN' AND job_type = 'Permanent'");
 
+        $stmt_p->bind_param("s", $current_date1);
+        $stmt_p->execute();
+        $result_p = $stmt_p->get_result();
+        $row_p = $result_p->fetch_array();
 
-        // $sql_p = "select job_type, open_date_admin, closed_date_admin from req_experience where STR_TO_DATE(closed_date,'%d/%m/%Y %H:%i:%s') >= STR_TO_DATE('$current_date','%d/%m/%Y %H:%i:%s') and status='OPEN' and job_type='Permanent'";
-        // $sql_p = "SELECT job_type, open_date_admin, closed_date_admin, advertisement_title, advertisement_url, status FROM req_experience WHERE STR_TO_DATE(closed_date, '%d/%m/%Y %H:%i:%s') >= STR_TO_DATE('$current_date', '%d/%m/%Y %H:%i:%s') AND status = 'OPEN' AND job_type = 'Permanent'";
-
-        $sql_p = "SELECT job_type, open_date, open_date_admin, closed_date_admin, advertisement_title, advertisement_url, status FROM req_experience WHERE closed_date_admin >= '$current_date1' AND status = 'OPEN'
-          AND job_type = 'Permanent'";
-
-        $result_p = mysqli_query($link, $sql_p);
-
-        $row_p = mysqli_fetch_array($result_p);
         $show_btn = false;
         $advertisements = [];
+        $unique_ads = [];
         if (mysqli_num_rows($result_p) > 0) {
           foreach ($result_p as $r) {
             $job_type_p = $r['job_type'];
@@ -39,120 +25,173 @@
             $close_date = $r['closed_date_admin'];
             $status = $r['status'];
             $advertisement_url = $r['advertisement_url'];
-            //                        echo $r['open_date_admin'] . '<br>';
-            //                        echo $r['closed_date_admin'] . '<br>';
-            //                        echo $current_date1 . '<br>';
 
             if ($open_date <= $current_date1 && $current_date1 <= $close_date) {
               $show_btn = true;
             }
             if ($open_date <= $current_date1 && $status == 'OPEN' && !empty($advertisement_url)) {
-              // Generate a unique key based on title and URL
-              $ad_key = $r['advertisement_title'] . '|' . $r['advertisement_url']; // Use '|' as a delimiter
-
-              // Check if the key is already in the array
+              $ad_key = $r['advertisement_title'] . '|' . $r['advertisement_url'];
               if (!isset($unique_ads[$ad_key])) {
-                // Add to advertisements array
                 $advertisements[] = [
                   'title' => $r['advertisement_title'],
                   'url' => $r['advertisement_url']
                 ];
-                // Mark as added
                 $unique_ads[$ad_key] = true;
               }
             }
           }
         }
-
         ?>
-        <center class="yellow-text blinking">
+        <div class="col-xs-12 text-center">
+          <font class="alert-text blinking"><b>Important Note: Please use only latest Google Chrome/Mozilla Firefox browser to apply online. </b></font>
+          <br /><br />
+        </div>
 
-          <font class="alert-text blinking"><b>Important Note: Please use only latest Google Chrome/Mozilla Firefox browser to apply online. </b></font> <br /><br />
+        <?php
 
-        </center>
-        <br />
-        <!--Advt. No. 03/2020: Online applications are invited from Indian nationals on direct recruitment basis for the post of Scientific Technical Officer - I (Computer Science) and Private Secretary at INFLIBNET Centre. <a href="https://www.inflibnet.ac.in/jobs/AdvtNo03_2020_STO_PS.pdf" style="color:skyblue;" target="_blank">(View Advertisement)</a> <br>-->
-        <!-- <font style="color: red;"><strong>Advt Nos. 01/2021: "Due to surge in COVID-19 cases throughout the country, the interview for the post of Scientist-D(LS) reserved under OBC(NCL) which was scheduled on Saturday, 22nd January 2022 HAS BEEN POSTPONED TILL FURTHER ORDER. The fresh date will be intimated in due course.The inconvenience caused is regretted."</strong></font> <br/><br/> -->
-        <!-- <h4 class="inquiryTitle" style="margin-bottom: 20px !important;"><a href="https://www.inflibnet.ac.in/jobs/Full_Advertisement_02-2024-Scientist-B_(LS).pdf" style="color:skyblue;" target="_blank"><span>Advt. No.02/2024: Advertisement</span></a></h4> -->
+        $stmt_p = $link->prepare("SELECT DISTINCT job_type, open_date_admin, closed_date_admin, advertisement_title, advertisement_url, status, post, Name FROM req_experience WHERE closed_date_admin >= ? AND status = 'OPEN' AND job_type = 'Permanent'");
+
+        $stmt_p->bind_param("s", $current_date1);
+        $stmt_p->execute();
+        $result_p = $stmt_p->get_result();
+        $row_p = $result_p->fetch_array();
+
+        $show_btn = false;
+        $advertisements = [];
+        $unique_ads = [];
+        $post_date_map = [];
+
+        if (mysqli_num_rows($result_p) > 0) {
+          foreach ($result_p as $r) {
+            $job_type_p = $r['job_type'];
+            $open_date = $r['open_date_admin'];
+            $close_date = $r['closed_date_admin'];
+            $status = $r['status'];
+            $advertisement_url = $r['advertisement_url'];
+
+            if ($open_date <= $current_date1 && $current_date1 <= $close_date) {
+              $show_btn = true;
+            }
+            if ($open_date <= $current_date1 && $status == 'OPEN' && !empty($advertisement_url)) {
+              $ad_key = $r['advertisement_title'] . '|' . $r['advertisement_url'];
+              if (!isset($unique_ads[$ad_key])) {
+                $advertisements[] = [
+                  'title' => $r['advertisement_title'],
+                  'url' => $r['advertisement_url']
+                ];
+                $unique_ads[$ad_key] = true;
+              }
+            }
+            if ($status == 'OPEN') {
+              $key = $open_date . '|' . $close_date;
+              $post_date_map[$key][] = $r['Name'];
+            }
+          }
+        }
+        ?>
 
         <?php
         foreach ($advertisements as $ad) {
-          echo '<h4 class="inquiryTitle" style="margin-bottom: 20px !important;">
+          echo '<div class="col-xs-12"><h4 class="inquiryTitle text-center" style="margin-bottom: 20px !important;">
             <a href="' . $ad['url'] . '" style="color:skyblue;" target="_blank">
-                <span>' . 'Advertisement No.' . $ad['title'] . '</span>
+            <span>' . $ad['title'] . '</span>
             </a>
-          </h4>';
+          </h4></div>';
         }
 
         if ($show_btn) {
-          //if ($open_date <= $current_date1 && $current_date1 <= $close_date) {
         ?>
 
-          <div class="col-md-6 col-sm-6 col-xs-12 col-sm-offset-2 buttonGroup br">
-            <a href="application_form.php" class="borderWhite login-btn btn btn-block pull-right mb0"><i class="fa fa-user f30"></i> <br>Apply Now</a> <br />
+          <div class="col-xs-12 text-center buttonGroup br">
+            <a href="application_form.php" class="borderWhite login-btn btn btn-block mb0" style="max-width:300px; margin:0 auto;">
+              <i class="fa fa-user f30"></i><br>Apply Now
+            </a>
           </div>
+
 
         <?php
         } else {
         ?>
-          <!--<div class="col-md-12 text-center"><h2 class="red-text blinking">Online submission available shortly.</h2></div>-->
           <?php if (empty($advertisements)) {
           ?>
-            <div class="col-md-12 text-center">
+            <div class="col-xs-12 text-center">
               <h2 class="red-text blinking">No current job openings available. Please check back later.</h2>
             </div>
           <?php
           } else {
           ?>
-            <div class="col-md-12 text-center">
+            <div class="col-xs-12 text-center">
               <h2 class="red-text blinking">Online submission has been closed.</h2>
             </div>
-          <?php
-          } ?>
-          <!--<div class="col-md-6 col-sm-6 col-xs-12 buttonGroup">
-                            <a href="login.php" class="borderWhite login-btn btn btn-block pull-right"><i class="fa fa-user f30"></i> <br>Login</a>
-                    </div>-->
+          <?php } ?>
         <?php } ?>
 
-        <?php if ($current_date1 <= "2025-07-28 10:00:00") { ?>
-          <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-            <div class="buttonGroup text-center">
-
-              <center><a href="login.php" class="borderWhite login-btn btn btn-block blueBtn"><i class="fa fa-address-card-o f30"></i> <br>Download Admit Card</a></center>
-              <h4 class="postTitle">FOR POST:</h4>
-              <ul class="contactBox">
-                <li style="color:white !important"><i class="fa fa-hand-o-right"></i>Advt. No. 01/2025: Clerk-Cum-Typist (CCTAdmin-1-2025) </li>
-                <!-- <li style="color:white !important"><i class="fa fa-hand-o-right"></i>Advt No. 02/2023: Clerk cum Typist </li> -->
-              </ul>
+        <?php if ($current_date1 <= "2025-07-03 10:00:00") { ?>
+          <div class="col-xs-12 text-center">
+            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-2">
+              <div class="buttonGroup text-center">
+                <a href="login.php" class="borderWhite login-btn btn btn-block blueBtn"><i class="fa fa-address-card-o f30"></i> <br>Download Admit Card</a>
+                <h4 class="postTitle">FOR POST:</h4>
+                <ul class="contactBox">
+                  <li style="color:white !important"><i class="fa fa-hand-o-right"></i>Advt. No. 01/2025: Clerk-Cum-Typist (CCTAdmin-1-2025) </li>
+                  $1
+              </div>
             </div>
           </div>
         <?php } ?>
-        <div style="clear: both;"></div>
-        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-          <!--                    <h4>
-                                            <span class="yellow-text">
-                                                <ul class="contactBox">
-                                                    <li><i class="fa fa-hand-o-right"></i>The last date of filling Online Application is 22.02.2023 upto 05.30 PM. </li>
-                                                    <li><i class="fa fa-hand-o-right"></i>The last date to receive the hard copy of the application with all testimonials is 04.03.2023 upto 5:30 PM.</li>
-                                                    <li>The last date of filling Online Application is 23.02.2023 upto 5:30 pm, and the last date of receiving Hard Copy of the Application with all testimonials is 05.03.2023 upto 5:30 pm</li>
-                                                </ul>
-                                            </span>
-                                        </h4>-->
-          <div style="clear: both;"></div>
-          <br>
+
+        <?php if (!empty($post_date_map)) {
+          $has_open_posts = false;
+          foreach ($post_date_map as $key => $posts) {
+            list($open, $close) = explode('|', $key);
+            if ($current_date1 >= $open) {
+              $has_open_posts = true;
+              break;
+            }
+          }
+          if ($has_open_posts) { ?>
+            <div class="col-xs-12 text-center">
+              <h4>
+                <span class="yellow-text">
+                  <ul class="contactBox">
+                    <?php
+                    foreach ($post_date_map as $key => $posts) {
+                      list($open, $close) = explode('|', $key);
+                      if ($current_date1 < $open) continue;
+                      $open_fmt = date('d.m.Y', strtotime($open));
+                      $close_fmt = date('d.m.Y h:i A', strtotime($close));
+                      $hardcopy_date_obj = new DateTime($open);
+                      $hardcopy_date_obj->modify('+30 days');
+                      $hardcopy_last_date = $hardcopy_date_obj->format('d.m.Y');
+                      $hardcopy_time = '05:30 PM';
+                      $post_list = implode(', ', $posts);
+                    ?>
+                      <!-- <li><i class="fa fa-hand-o-right"></i>Application for post(s): <strong><?php echo $post_list; ?></strong> is open from <strong><?php echo $open_fmt; ?></strong> to <strong><?php echo $close_fmt; ?></strong>.</li>
+
+                      <li><i class="fa fa-hand-o-right"></i>The last date to receive the hard copy of the application for post(s): <strong><?php echo $post_list; ?></strong> is <strong><?php echo $hardcopy_last_date . ' upto ' . $hardcopy_time; ?></strong>.</li> -->
+
+                      <li><i class="fa fa-hand-o-right"></i>Online application is open from <strong><?php echo $open_fmt; ?></strong> to <strong><?php echo $close_fmt; ?></strong>.</li>
+
+                      <li><i class="fa fa-hand-o-right"></i>The last date to receive the hard copy of the application is <strong><?php echo $hardcopy_last_date . ' upto ' . $hardcopy_time; ?></strong>.</li>
+
+                    <?php } ?>
+                  </ul>
+                </span>
+              </h4>
+            </div>
+        <?php }
+        } ?>
+
+        <div class="col-xs-12 text-center">
           <h4 class="inquiryTitle"><span>For Query</span></h4>
           <ul class="contactBox" style="color:white!important">
-            <li class="text-center"><i class="fa fa-user"></i> Administrative Officer (P & A)</li>
-            <li class="text-center"><i class="fa fa-map-marker" aria-hidden="true"></i> INFLIBNET Centre, Infocity, Gandhinagar - 382007</li>
-            <li class="text-center"><i class="fa fa-phone"></i> (+91) 79 2326 8000</li>
-            <li class="text-center"><i class="fa fa-envelope"></i> recruitment[at]inflibnet[dot]ac[dot]in </li>
+            <li><i class="fa fa-user"></i> Administrative Officer (P & A)</li>
+            <li><i class="fa fa-map-marker" aria-hidden="true"></i> INFLIBNET Centre, Infocity, Gandhinagar - 382007</li>
+            <li><i class="fa fa-phone"></i> (+91) 79 2326 8000</li>
+            <li><i class="fa fa-envelope"></i> recruitment[at]inflibnet[dot]ac[dot]in </li>
           </ul>
         </div>
-        <div style="clear: both;"></div>
       </div>
-      <!--            <div style="clear:both;font-size: 14px;letter-spacing: 1px;">
-                            <font class="white-text">Care : we expect heavy load on the website towards the last date for applying. please, therefore, apply well before the closing date to avoid network congestion / disconnection & inability to register your application.</font>
-                        </div>-->
     </form>
   </div>
 </div>

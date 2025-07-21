@@ -19,59 +19,66 @@ if (!isset($_SERVER['HTTP_REFERER'])) {
 //error_reporting(0);
 
 include('dbConfig.php');
-$reg_id = mysqli_real_escape_string($link, $_POST['app_id']);
-$post = mysqli_real_escape_string($link, $_POST['post']);
-$job_type = mysqli_real_escape_string($link, $_POST['job_type']);
-if ($job_type == 'Contractual') {
-    $job_location = mysqli_real_escape_string($link, $_POST['job_location']);
+include "checker_input.php";
+
+$reg_id   = clean_input($link, $_POST['app_id'] ?? '', 'Application ID');
+$post     = clean_input($link, $_POST['post'] ?? '', 'Post');
+$job_type = clean_input($link, $_POST['job_type'] ?? '', 'Job Type');
+
+if (($job_type ?? '') == 'Contractual') {
+    $job_location = clean_input($link, $_POST['job_location'] ?? '', 'Job Location');
 } else {
     $job_location = '';
 }
-$surname = mysqli_real_escape_string($link, $_POST['surname']);
-$firstname = mysqli_real_escape_string($link, $_POST['fname']);
-$lastname = mysqli_real_escape_string($link, $_POST['lastname']);
-$fathername = mysqli_real_escape_string($link, $_POST['fathername']);
-$dob = mysqli_real_escape_string($link, $_POST['dob']);
-$age = mysqli_real_escape_string($link, $_POST['agenew']);
-$email = mysqli_real_escape_string($link, $_POST['email']);
-$caste = mysqli_real_escape_string($link, $_POST['caste']);
-$issue_year = mysqli_real_escape_string($link, $_POST['issue_year']);
-$certi_no = mysqli_real_escape_string($link, $_POST['certi_no']);
-$serving = mysqli_real_escape_string($link, $_POST['serving']);
-$sex = mysqli_real_escape_string($link, $_POST['sex']);
-$nation = mysqli_real_escape_string($link, $_POST['nation']);
-$mstatus = mysqli_real_escape_string($link, $_POST['mstatus']);
-$address = mysqli_real_escape_string($link, $_POST['address']);
-$paddress = mysqli_real_escape_string($link, $_POST['paddress']);
-$state = mysqli_real_escape_string($link, $_POST['state']);
-$pstate = mysqli_real_escape_string($link, $_POST['pstate']);
-$city = mysqli_real_escape_string($link, $_POST['city']);
-$pcity = mysqli_real_escape_string($link, $_POST['pcity']);
-$pincode = mysqli_real_escape_string($link, $_POST['pincode']);
-$ppincode = mysqli_real_escape_string($link, $_POST['ppincode']);
-$telephone = mysqli_real_escape_string($link, $_POST['telephone']);
-$mobile = mysqli_real_escape_string($link, $_POST['mobile']);
-$aadhar_no = mysqli_real_escape_string($link, $_POST['aadhar_no']);
-$disability = mysqli_real_escape_string($link, $_POST['disability']);
 
-if ($disability == "Yes") {
-    //    $disability_percentage = mysqli_real_escape_string($link, $_POST['disability_percentage']);
-    $type_of_disability = mysqli_real_escape_string($link, $_POST['type_of_disability']);
+$surname       = clean_input($link, $_POST['surname'] ?? '', 'Surname');
+$firstname     = clean_input($link, $_POST['fname'] ?? '', 'First Name');
+$lastname      = clean_input($link, $_POST['lastname'] ?? '', 'Last Name');
+$fathername    = clean_input($link, $_POST['fathername'] ?? '', 'Father Name');
+$dob           = clean_input($link, $_POST['dob'] ?? '', 'Date of Birth');
+$age           = clean_input($link, $_POST['agenew'] ?? '', 'Age');
+$email         = clean_input($link, $_POST['email'] ?? '', 'Email');
+$caste         = clean_input($link, $_POST['caste'] ?? '', 'Caste');
+$issue_year    = clean_input($link, $_POST['issue_year'] ?? '', 'Issue Year');
+$certi_no      = clean_input($link, $_POST['certi_no'] ?? '', 'Certificate Number');
+$serving       = clean_input($link, $_POST['serving'] ?? '', 'Serving');
+$sex           = clean_input($link, $_POST['sex'] ?? '', 'Sex');
+$nation        = clean_input($link, $_POST['nation'] ?? '', 'Nationality');
+$mstatus       = clean_input($link, $_POST['mstatus'] ?? '', 'Marital Status');
+$address       = clean_input($link, $_POST['address'] ?? '', 'Address');
+$paddress      = clean_input($link, $_POST['paddress'] ?? '', 'Permanent Address');
+$state         = clean_input($link, $_POST['state'] ?? '', 'State');
+$pstate        = clean_input($link, $_POST['pstate'] ?? '', 'Permanent State');
+$city          = clean_input($link, $_POST['city'] ?? '', 'City');
+$pcity         = clean_input($link, $_POST['pcity'] ?? '', 'Permanent City');
+$pincode       = clean_input($link, $_POST['pincode'] ?? '', 'Pincode');
+$ppincode      = clean_input($link, $_POST['ppincode'] ?? '', 'Permanent Pincode');
+$telephone     = clean_input($link, $_POST['telephone'] ?? '', 'Telephone');
+$mobile        = clean_input($link, $_POST['mobile'] ?? '', 'Mobile');
+$aadhar_no     = clean_input($link, $_POST['aadhar_no'] ?? '', 'Aadhar Number');
+$disability    = clean_input($link, $_POST['disability'] ?? '', 'Disability');
+
+
+if (($disability ?? '') == "Yes") {
+    // $disability_percentage = clean_input($link, $_POST['disability_percentage'] ?? '', 'Disability Percentage');
+    $type_of_disability = clean_input($link, $_POST['type_of_disability'] ?? '', 'Type of Disability');
 } else {
-    //    $disability_percentage = Null;
+    // $disability_percentage = NULL;
     $type_of_disability = NULL;
 }
 
-$stenoGraphy_speed = mysqli_real_escape_string($link, $_POST["stenoGraphy_speed"]);
-$stenography_certi_no = mysqli_real_escape_string($link, $_POST["stenography_certi_no"]);
-$stenography_certi_date = mysqli_real_escape_string($link, $_POST["stenography_certi_date"]);
-$typing_speed = mysqli_real_escape_string($link, $_POST["typing_speed"]);
-$typing_certi_no = mysqli_real_escape_string($link, $_POST["typing_certi_no"]);
-$typing_certi_date = mysqli_real_escape_string($link, $_POST["typing_certi_date"]);
-$typing_language = mysqli_real_escape_string($link, $_POST["typing_language"]);
 
-$inf_employee = mysqli_real_escape_string($link, $_POST["inf_employee"]);
-$payroll_no = mysqli_real_escape_string($link, $_POST["payroll_no"]);
+$stenoGraphy_speed       = clean_input($link, $_POST["stenoGraphy_speed"] ?? '', 'Stenography Speed');
+$stenography_certi_no    = clean_input($link, $_POST["stenography_certi_no"] ?? '', 'Stenography Certificate Number');
+$stenography_certi_date  = clean_input($link, $_POST["stenography_certi_date"] ?? '', 'Stenography Certificate Date');
+$typing_speed            = clean_input($link, $_POST["typing_speed"] ?? '', 'Typing Speed');
+$typing_certi_no         = clean_input($link, $_POST["typing_certi_no"] ?? '', 'Typing Certificate Number');
+$typing_certi_date       = clean_input($link, $_POST["typing_certi_date"] ?? '', 'Typing Certificate Date');
+$typing_language         = clean_input($link, $_POST["typing_language"] ?? '', 'Typing Language');
+
+$inf_employee            = clean_input($link, $_POST["inf_employee"] ?? '', 'INF Employee');
+$payroll_no              = clean_input($link, $_POST["payroll_no"] ?? '', 'Payroll Number');
+
 
 $certi_file_path = '';
 $ua = getBrowser();
@@ -93,43 +100,331 @@ date_default_timezone_set('Asia/Kolkata');
 $current_date = date("Y-m-d H:i:s");
 $enc_current_date = strtotime($current_date);
 
+// if ($_FILES["caste_certi"]["name"]) {
+//     $temp = explode(".", $_FILES["caste_certi"]["name"]);
+//     $newfilename = md5($reg_id) . md5($enc_current_date) . md5('caste') . '.' . end($temp);
+//     $certi_file_path = 'uploads/caste/' . $newfilename;
+//     move_uploaded_file($_FILES["caste_certi"]["tmp_name"], $certi_file_path);
+// }
+
+// if ($_FILES["disability_certi"]["name"]) {
+//     $temp = explode(".", $_FILES["disability_certi"]["name"]);
+//     $newfilename = md5($reg_id) . md5('disability') . md5($enc_current_date) . '.' . end($temp);
+//     $disability_certi_path = 'uploads/disability/' . $newfilename;
+//     move_uploaded_file($_FILES["disability_certi"]["tmp_name"], $disability_certi_path);
+// }
+
+// if ($_FILES["stenography_certi"]["name"]) {
+//     $temp = explode(".", $_FILES["stenography_certi"]["name"]);
+//     $newfilename = md5('stenography') . md5($enc_current_date) . md5($reg_id) . '.' . end($temp);
+//     $stenography_certi_path = 'uploads/steno/' . $newfilename;
+//     move_uploaded_file($_FILES["stenography_certi"]["tmp_name"], $stenography_certi_path);
+// }
+
 if ($_FILES["caste_certi"]["name"]) {
-    $temp = explode(".", $_FILES["caste_certi"]["name"]);
+    $allowed_types = [
+        'jpg' => ['mime' => 'image/jpeg', 'signature' => "\xFF\xD8\xFF"],
+        'jpeg' => ['mime' => 'image/jpeg', 'signature' => "\xFF\xD8\xFF"],
+        'png' => ['mime' => 'image/png', 'signature' => "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A"],
+        'pdf' => ['mime' => 'application/pdf', 'signature' => "%PDF-"]
+    ];
+
+    $original_name = $_FILES["caste_certi"]["name"];
+    $file_tmp = $_FILES["caste_certi"]["tmp_name"];
+    $file_size = $_FILES["caste_certi"]["size"];
+    $ext = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+
+    if (!array_key_exists($ext, $allowed_types)) {
+        echo "<script>alert('Invalid file extension.');</script>";
+        exit;
+    }
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file_tmp);
+    finfo_close($finfo);
+
+    if ($mime !== $allowed_types[$ext]['mime']) {
+        echo "<script>alert('Mismatch between extension and MIME type.');</script>";
+        exit;
+    }
+
+    if ($file_size > 400 * 1024) {
+        echo "<script>alert('File too large. Max 400 KB allowed.');</script>";
+        exit;
+    }
+
+    $expected_signature = $allowed_types[$ext]['signature'];
+    $expected_length = strlen($expected_signature);
+    $handle = fopen($file_tmp, 'rb');
+    if ($handle === false) {
+        echo "<script>alert('Unable to read file for validation.');</script>";
+        exit;
+    }
+    $file_signature = fread($handle, $expected_length);
+    fclose($handle);
+
+    if (strncmp($file_signature, $expected_signature, $expected_length) !== 0) {
+        echo "<script>alert('File content does not match declared type.');</script>";
+        exit;
+    }
+
+    $temp = explode(".", $original_name);
     $newfilename = md5($reg_id) . md5($enc_current_date) . md5('caste') . '.' . end($temp);
     $certi_file_path = 'uploads/caste/' . $newfilename;
-    move_uploaded_file($_FILES["caste_certi"]["tmp_name"], $certi_file_path);
+
+    if (!move_uploaded_file($file_tmp, $certi_file_path)) {
+        echo "<script>alert('File upload failed.');</script>";
+        exit;
+    }
 }
 
 if ($_FILES["disability_certi"]["name"]) {
-    $temp = explode(".", $_FILES["disability_certi"]["name"]);
+    $allowed_types = [
+        'jpg' => ['mime' => 'image/jpeg', 'signature' => "\xFF\xD8\xFF"],
+        'jpeg' => ['mime' => 'image/jpeg', 'signature' => "\xFF\xD8\xFF"],
+        'png' => ['mime' => 'image/png', 'signature' => "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A"],
+        'pdf' => ['mime' => 'application/pdf', 'signature' => "%PDF-"]
+    ];
+
+    $original_name = $_FILES["disability_certi"]["name"];
+    $file_tmp = $_FILES["disability_certi"]["tmp_name"];
+    $file_size = $_FILES["disability_certi"]["size"];
+    $ext = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+
+    if (!array_key_exists($ext, $allowed_types)) {
+        echo "<script>alert('Invalid file extension.');</script>";
+        exit;
+    }
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file_tmp);
+    finfo_close($finfo);
+
+    if ($mime !== $allowed_types[$ext]['mime']) {
+        echo "<script>alert('Mismatch between extension and MIME type.');</script>";
+        exit;
+    }
+
+    if ($file_size > 400 * 1024) {
+        echo "<script>alert('File too large. Max 400 KB allowed.');</script>";
+        exit;
+    }
+
+    $expected_signature = $allowed_types[$ext]['signature'];
+    $expected_length = strlen($expected_signature);
+    $handle = fopen($file_tmp, 'rb');
+    if ($handle === false) {
+        echo "<script>alert('Unable to read file for validation.');</script>";
+        exit;
+    }
+    $file_signature = fread($handle, $expected_length);
+    fclose($handle);
+
+    if (strncmp($file_signature, $expected_signature, $expected_length) !== 0) {
+        echo "<script>alert('File content does not match declared type.');</script>";
+        exit;
+    }
+
+    $temp = explode(".", $original_name);
     $newfilename = md5($reg_id) . md5('disability') . md5($enc_current_date) . '.' . end($temp);
     $disability_certi_path = 'uploads/disability/' . $newfilename;
-    move_uploaded_file($_FILES["disability_certi"]["tmp_name"], $disability_certi_path);
+
+    if (!move_uploaded_file($file_tmp, $disability_certi_path)) {
+        echo "<script>alert('File upload failed.');</script>";
+        exit;
+    }
 }
 
 if ($_FILES["stenography_certi"]["name"]) {
-    $temp = explode(".", $_FILES["stenography_certi"]["name"]);
+    $allowed_types = [
+        'jpg' => ['mime' => 'image/jpeg', 'signature' => "\xFF\xD8\xFF"],
+        'jpeg' => ['mime' => 'image/jpeg', 'signature' => "\xFF\xD8\xFF"],
+        'png' => ['mime' => 'image/png', 'signature' => "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A"],
+        'pdf' => ['mime' => 'application/pdf', 'signature' => "%PDF-"]
+    ];
+
+    $original_name = $_FILES["stenography_certi"]["name"];
+    $file_tmp = $_FILES["stenography_certi"]["tmp_name"];
+    $file_size = $_FILES["stenography_certi"]["size"];
+    $ext = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+
+    if (!array_key_exists($ext, $allowed_types)) {
+        echo "<script>alert('Invalid file extension.');</script>";
+        exit;
+    }
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file_tmp);
+    finfo_close($finfo);
+
+    if ($mime !== $allowed_types[$ext]['mime']) {
+        echo "<script>alert('Mismatch between extension and MIME type.');</script>";
+        exit;
+    }
+
+    if ($file_size > 400 * 1024) {
+        echo "<script>alert('File too large. Max 400 KB allowed.');</script>";
+        exit;
+    }
+
+    $expected_signature = $allowed_types[$ext]['signature'];
+    $expected_length = strlen($expected_signature);
+    $handle = fopen($file_tmp, 'rb');
+    if ($handle === false) {
+        echo "<script>alert('Unable to read file for validation.');</script>";
+        exit;
+    }
+    $file_signature = fread($handle, $expected_length);
+    fclose($handle);
+
+    if (strncmp($file_signature, $expected_signature, $expected_length) !== 0) {
+        echo "<script>alert('File content does not match declared type.');</script>";
+        exit;
+    }
+
+    $temp = explode(".", $original_name);
     $newfilename = md5('stenography') . md5($enc_current_date) . md5($reg_id) . '.' . end($temp);
     $stenography_certi_path = 'uploads/steno/' . $newfilename;
-    move_uploaded_file($_FILES["stenography_certi"]["tmp_name"], $stenography_certi_path);
+
+    if (!move_uploaded_file($file_tmp, $stenography_certi_path)) {
+        echo "<script>alert('File upload failed.');</script>";
+        exit;
+    }
 }
 
+
+// if ($_FILES["typing_certi"]["name"]) {
+//     $temp = explode(".", $_FILES["typing_certi"]["name"]);
+//     $newfilename = md5($enc_current_date) . md5('typing') . md5($reg_id) . '.' . end($temp);
+//     $typing_certi_path = 'uploads/typing/' . $newfilename;
+//     move_uploaded_file($_FILES["typing_certi"]["tmp_name"], $typing_certi_path);
+// }
+
+
 if ($_FILES["typing_certi"]["name"]) {
-    $temp = explode(".", $_FILES["typing_certi"]["name"]);
+    $allowed_types = [
+        'jpg' => ['mime' => 'image/jpeg', 'signature' => "\xFF\xD8\xFF"],
+        'jpeg' => ['mime' => 'image/jpeg', 'signature' => "\xFF\xD8\xFF"],
+        'png' => ['mime' => 'image/png', 'signature' => "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A"],
+        'pdf' => ['mime' => 'application/pdf', 'signature' => "%PDF-"]
+    ];
+
+    $original_name = $_FILES["typing_certi"]["name"];
+    $file_tmp = $_FILES["typing_certi"]["tmp_name"];
+    $file_size = $_FILES["typing_certi"]["size"];
+    $ext = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+
+    if (!array_key_exists($ext, $allowed_types)) {
+        echo "<script>alert('Invalid file extension.');</script>";
+        exit;
+    }
+
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file_tmp);
+    finfo_close($finfo);
+
+    if ($mime !== $allowed_types[$ext]['mime']) {
+        echo "<script>alert('Mismatch between extension and MIME type.');</script>";
+        exit;
+    }
+
+    if ($file_size > 400 * 1024) {
+        echo "<script>alert('File too large. Max 400 KB allowed.');</script>";
+        exit;
+    }
+
+    $expected_signature = $allowed_types[$ext]['signature'];
+    $expected_length = strlen($expected_signature);
+    $handle = fopen($file_tmp, 'rb');
+    if ($handle === false) {
+        echo "<script>alert('Unable to read file for validation.');</script>";
+        exit;
+    }
+    $file_signature = fread($handle, $expected_length);
+    fclose($handle);
+
+    if (strncmp($file_signature, $expected_signature, $expected_length) !== 0) {
+        echo "<script>alert('File content does not match declared type.');</script>";
+        exit;
+    }
+
+    $temp = explode(".", $original_name);
     $newfilename = md5($enc_current_date) . md5('typing') . md5($reg_id) . '.' . end($temp);
     $typing_certi_path = 'uploads/typing/' . $newfilename;
-    move_uploaded_file($_FILES["typing_certi"]["tmp_name"], $typing_certi_path);
+
+    if (!move_uploaded_file($file_tmp, $typing_certi_path)) {
+        echo "<script>alert('File upload failed.');</script>";
+        exit;
+    }
 }
+
+
 
 //$sql = "update prsnl set post='$post',surname='$surname',name='$firstname',lastname='$lastname',fathername='$fathername',dob='$dob',age='$age',email='$email',category='$caste',caste_certi='$certi_file_path' ,caste_certino='$certi_no', caste_certi_issue_year='$issue_year', sex='$sex',nation='$nation',mstatus='$mstatus', job_location='$job_location',address='$address',paddress='$paddress',state='$state',pstate='$pstate',city='$city',pcity='$pcity',pincode='$pincode',ppincode='$ppincode',mobile='$mobile', aadhar_no='$aadhar_no', telephone='$telephone' where id='$reg_id'";
 
 $sql = "update prsnl set surname='$surname',name='$firstname',lastname='$lastname',fathername='$fathername',category='$caste',caste_certi='$certi_file_path' ,caste_certino='$certi_no', caste_certi_issue_year='$issue_year', sex='$sex',nation='$nation',mstatus='$mstatus', job_location='$job_location',address='$address',paddress='$paddress',state='$state',pstate='$pstate',city='$city',pcity='$pcity',pincode='$pincode',ppincode='$ppincode',mobile='$mobile', aadhar_no='$aadhar_no', disability='$disability', type_of_disability='$type_of_disability', disability_certi='$disability_certi_path', telephone='$telephone',browser_history='$brawser_h', stenoGraphy_speed='$stenoGraphy_speed',stenography_certi_no='$stenography_certi_no',stenography_certi_date='$stenography_certi_date',stenography_certi='$stenography_certi_path',typing_speed='$typing_speed',typing_certi_no='$typing_certi_no',typing_certi_date='$typing_certi_date',typing_certi='$typing_certi_path',typing_language='$typing_language',inf_employee='$inf_employee',payroll_no='$payroll_no' where id='$reg_id'";
 $result_update = mysqli_query($link, $sql);
 
+$stmt = $link->prepare(
+    "UPDATE prsnl
+     SET surname=?, name=?, lastname=?, fathername=?, category=?, caste_certi=?, caste_certino=?, caste_certi_issue_year=?,
+         sex=?, nation=?, mstatus=?, job_location=?, address=?, paddress=?, state=?, pstate=?, city=?, pcity=?,
+         pincode=?, ppincode=?, mobile=?, aadhar_no=?, disability=?, type_of_disability=?, disability_certi=?,
+         telephone=?, browser_history=?, stenoGraphy_speed=?, stenography_certi_no=?, stenography_certi_date=?,
+         stenography_certi=?, typing_speed=?, typing_certi_no=?, typing_certi_date=?, typing_certi=?, typing_language=?,
+         inf_employee=?, payroll_no=?
+     WHERE id=?"
+);
+$stmt->bind_param(
+    'sssssssssssssssssssssssssssssssssssss',
+    $surname,
+    $firstname,
+    $lastname,
+    $fathername,
+    $caste,
+    $certi_file_path,
+    $certi_no,
+    $issue_year,
+    $sex,
+    $nation,
+    $mstatus,
+    $job_location,
+    $address,
+    $paddress,
+    $state,
+    $pstate,
+    $city,
+    $pcity,
+    $pincode,
+    $ppincode,
+    $mobile,
+    $aadhar_no,
+    $disability,
+    $type_of_disability,
+    $disability_certi_path,
+    $telephone,
+    $brawser_h,
+    $stenoGraphy_speed,
+    $stenography_certi_no,
+    $stenography_certi_date,
+    $stenography_certi_path,
+    $typing_speed,
+    $typing_certi_no,
+    $typing_certi_date,
+    $typing_certi_path,
+    $typing_language,
+    $inf_employee,
+    $payroll_no,
+    $reg_id
+);
+$result_update = $stmt->execute();
+
 if ($result_update) {
-    $sql = "select * from prsnl where id='$reg_id'";
-    $result = mysqli_query($link, $sql);
-    if (mysqli_num_rows($result) == 0) {
+    $stmt = $link->prepare("SELECT * FROM prsnl WHERE id = ?");
+    $stmt->bind_param('i', $reg_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows == 0) {
         //echo json_encode("false");
     } else {
         while ($row = mysqli_fetch_assoc($result)) {

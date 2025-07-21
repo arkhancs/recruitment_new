@@ -985,6 +985,19 @@ if ($_SESSION['is_login'] != 'true') {
                             <?php } ?>
                         </td>
                     </tr>
+                    <?php if ($row['post'] == 'SELS-2-2025') { ?>
+                        <tr>
+                            <td align="center"></td>
+                            <td>(11) APARs for last 5 years</td>
+                            <td>Yes</td>
+                            <td>No</td>
+                            <td width="10%">
+                                <?php if (!empty($row['apars_doc'])) { ?>
+                                    <a target="_blank" href="<?php echo $row['apars_doc']; ?>">View</a>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                    <?php } ?>
 
                     <tr>
                         <td align="center"></td>

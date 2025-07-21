@@ -39,6 +39,7 @@
                 <a href="./Admin/admin_date_wise_data_2023.php" class="btn btn-warning btn-sm pull-left mr5">Statistic 2023</a>-->
         <input type="button" name="attendance" id="attendance" class="btn btn-success btn-sm mr5" value="Attendance Sheet" />
         <input type="button" name="full_export" id="full_export" class="btn btn-danger btn-sm mr5" value="Full Export" />
+        <a href="./Admin/payment_link.php" class="btn btn-primary btn-sm pull-left mr5">Payment Link</a>
         <!--<a href="./Admin/omr_result.php" class="btn btn-primary btn-sm mr5">OMR Sheet</a>-->
       </div>
 

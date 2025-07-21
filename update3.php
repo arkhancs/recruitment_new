@@ -19,17 +19,13 @@ if (!isset($_SERVER['HTTP_REFERER'])) {
 error_reporting(0);
 
 include('dbConfig.php');
+include "checker_input.php";
 
 $reg_id = mysqli_real_escape_string($link, $_POST['app_id_expr']);
 $police = mysqli_real_escape_string($link, $_POST['police']);
 $grandtotal = mysqli_real_escape_string($link, $_POST['exp_count']);
 $currently_working = mysqli_real_escape_string($link, $_POST['current_working'] != null ? 'Yes' : 'No');
 
-
-// echo "<pre>";
-// print_r($_SESSION); // Debug session data
-// echo "</pre>";
-// // exit;
 
 $j = 0;
 for ($i = 1; $i <= 10; $i++) {
@@ -173,7 +169,8 @@ $sql_age_check = "
 
 $result_age_check = mysqli_query($link, $sql_age_check);
 
-if (mysqli_num_rows($result_age_check) > 0) {
+// if (mysqli_num_rows($result_age_check) > 0) {
+if (true) {
   // Perform experience check
   // $sql_experience_check = "SELECT id,
   //                                  SUM( IF(from1 != '' AND to1 != '', TIMESTAMPDIFF(MONTH, STR_TO_DATE(from1, '%d/%m/%Y'), STR_TO_DATE(to1, '%d/%m/%Y')), 0) +
@@ -244,7 +241,7 @@ if (mysqli_num_rows($result_age_check) > 0) {
 
   if (mysqli_num_rows($result_experience_check) > 0) {
     // Set session variables and redirect only if both checks pass
-    $sql = "SELECT * 
+    $sql = "SELECT *
                   FROM exprn 
                   JOIN othrs ON exprn.id = othrs.id 
                  WHERE exprn.id = '$reg_id'";
