@@ -1,0 +1,5 @@
+uploads/
+*.rar
+*.zip
+*.sql
+vendor/

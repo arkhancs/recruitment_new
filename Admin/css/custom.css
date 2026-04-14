@@ -1,0 +1,41 @@
+.header_main1 {
+    width: 100%;
+    text-align: left;
+    background: linear-gradient(90deg, rgb(246, 246, 255) 0%, rgb(255, 255, 255) 35%, rgb(249, 249, 255) 100%);
+    border: 1px #535395 outset;
+    border-bottom-color: rgb(83, 83, 149);
+    border-bottom-style: outset;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(83, 83, 149);
+    border-bottom-style: outset;
+    float: left;
+    border-bottom-width: 1px;
+    padding: 10px 0px;
+    border-radius: 5px;
+}
+
+h3{
+    color:#000080;
+}
+.btn {
+    font-size: 16px;
+	cursor: pointer;
+	font-weight: bold;
+}
+.default {
+    border-color: #e7e7e7;
+    color: black;
+
+}
+
+.default:hover {
+    background: #e7e7e7;
+}
+
+.test{
+    font-weight:bold !important;
+}
+
+.ml5{
+    margin-left: 5px;
+}

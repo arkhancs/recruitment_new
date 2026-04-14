@@ -1,0 +1,24 @@
+RewriteEngine on 
+RewriteEngine On
+# 1) If NOT the current host
+RewriteCond %{HTTP_HOST}@@%{HTTP_REFERER} !^([^@]*)@@https?://\1/.*
+
+# 2) Deny access to these types
+RewriteRule \.(gif|jpg|jpeg|png|tif|pdf?)$ - [F]
+
+#RewriteCond %{HTTP_REFERER} !^http://(www\.)?localhost [NC] 
+#RewriteCond %{HTTP_REFERER} !^http://(www\.)?localhost.*$ [NC]
+#RewriteCond %{HTTP_REFERRER} !=https://recruitment.inflibnet.ac.in   [NC]
+#RewriteRule \.(png|jpg|pdf)$ - [F]
+#
+## Deny access to .htaccess
+#<Files .htaccess>
+#Order allow,deny
+#Deny from all
+#</Files>
+#
+## Disable directory browsing 
+#Options -Indexes
+#
+## Hide the contents of directories
+#IndexIgnore *
